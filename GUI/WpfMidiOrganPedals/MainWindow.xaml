@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfMidiOrganPedals"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MIDI Organ Pedals"
+        Height="350"
+        Width="525"
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         
+        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,5">
+            <local:MessagesView/>
+        </Border>
     </Grid>
 </Window>

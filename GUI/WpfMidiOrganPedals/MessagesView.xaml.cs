@@ -1,8 +1,8 @@
 ﻿namespace WpfMidiOrganPedals
 {
-    public partial class MainWindow : IMainWindow
+    public partial class MessagesView
     {
-        public MainWindow()
+        public MessagesView()
         {
             InitializeComponent();
         }
