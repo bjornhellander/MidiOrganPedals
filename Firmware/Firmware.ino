@@ -21,9 +21,9 @@ void setup() {
 
 void loop() {
   count++;
-  Serial.print("Hello World (");
-  Serial.print(count);
-  Serial.println(")");
+  char message[50];
+  snprintf(message, sizeof(message), "Hello World (%d)", count);
+  Serial.println(message);
   
   ledOn = !ledOn;
   digitalWrite(ledPin, ledOn);
