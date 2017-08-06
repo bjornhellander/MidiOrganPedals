@@ -10,20 +10,30 @@
    selected.
 */
 
-const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
-int count = 0;
-int ledOn = 1;
+#include "ConfigurationPort.h"
 
-void setup() {
-  Serial.begin(9600); // USB is always 12 Mbit/sec
+
+static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
+static int count = 0;
+static int ledOn = 1;
+
+
+static ConfigurationPort configurationPort;
+
+
+void setup()
+{
+  configurationPort.Setup();
   pinMode(ledPin, OUTPUT);
 }
 
-void loop() {
+
+void loop()
+{
   count++;
   char message[50];
   snprintf(message, sizeof(message), "Hello World (%d)", count);
-  Serial.println(message);
+  configurationPort.Send(message);
   
   ledOn = !ledOn;
   digitalWrite(ledPin, ledOn);
