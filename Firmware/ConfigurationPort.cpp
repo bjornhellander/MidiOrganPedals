@@ -8,8 +8,9 @@ void ConfigurationPort::Setup()
 }
 
 
-void ConfigurationPort::Send(const char message[])
+void ConfigurationPort::Send(const byte buffer[], int length)
 {
-  Serial.println(message);
+  Serial.write(buffer, length);
 }
+
 
