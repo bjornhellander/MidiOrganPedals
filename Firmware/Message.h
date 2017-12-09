@@ -5,12 +5,9 @@
 #include "Arduino.h"
 
 
-#define MAX_MESSAGE_TEXT_LENGTH 256
-
-
 class Message
 {
-  char text[MAX_MESSAGE_TEXT_LENGTH];
+  char text[256];
   
 public:
   Message(const char text[]);
