@@ -7,7 +7,7 @@ void ConfigurationPort::Setup()
 }
 
 
-void ConfigurationPort::Send(const Message message)
+void ConfigurationPort::Send(const RawMessage message)
 {
   const char *buffer = message.GetText();
   byte length = strlen(buffer);

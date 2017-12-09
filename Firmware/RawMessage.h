@@ -5,12 +5,12 @@
 #include "Arduino.h"
 
 
-class Message
+class RawMessage
 {
   char text[256];
   
 public:
-  Message(const char text[]);
+  RawMessage(const char text[]);
   
   const char *GetText() const;
 };

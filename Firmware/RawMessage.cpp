@@ -1,7 +1,7 @@
-#include "Message.h"
+#include "RawMessage.h"
 
 
-Message::Message(const char text[])
+RawMessage::RawMessage(const char text[])
 {
   int maxSize = sizeof(this->text) - 1;
   strncpy(this->text, text, maxSize);
@@ -9,7 +9,7 @@ Message::Message(const char text[])
 }
 
 
-const char *Message::Message::GetText() const
+const char *RawMessage::GetText() const
 {
   return text;
 }

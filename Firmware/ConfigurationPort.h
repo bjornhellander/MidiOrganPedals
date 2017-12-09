@@ -3,14 +3,14 @@
 
 
 #include "Arduino.h"
-#include "Message.h"
+#include "RawMessage.h"
 
 
 class ConfigurationPort
 {
 public:
   void Setup();
-  void Send(const Message message);
+  void Send(const RawMessage message);
 };
 
 

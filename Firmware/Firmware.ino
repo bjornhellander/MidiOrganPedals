@@ -33,7 +33,7 @@ void loop()
   count++;
   char messageText[50];
   snprintf(messageText, sizeof(messageText), "Hello World (%d)\n", count);
-  Message message(messageText);
+  RawMessage message(messageText);
   configurationPort.Send(message);
 
   ledOn = !ledOn;
