@@ -31,9 +31,10 @@ void setup()
 void loop()
 {
   count++;
-  char message[50];
-  snprintf(message, sizeof(message), "Hello World (%d)\n", count);
-  configurationPort.Send((byte*)message, strlen(message));
+  char messageText[50];
+  snprintf(messageText, sizeof(messageText), "Hello World (%d)\n", count);
+  Message message(messageText);
+  configurationPort.Send(message);
 
   ledOn = !ledOn;
   digitalWrite(ledPin, ledOn);

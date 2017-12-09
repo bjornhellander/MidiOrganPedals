@@ -1,5 +1,4 @@
 #include "ConfigurationPort.h"
-#include "Arduino.h"
 
 
 void ConfigurationPort::Setup()
@@ -8,8 +7,10 @@ void ConfigurationPort::Setup()
 }
 
 
-void ConfigurationPort::Send(const byte buffer[], int length)
+void ConfigurationPort::Send(const Message message)
 {
+  const char *buffer = message.GetText();
+  byte length = strlen(buffer);
   Serial.write(buffer, length);
 }
 

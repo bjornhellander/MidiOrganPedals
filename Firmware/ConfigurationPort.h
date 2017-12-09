@@ -3,13 +3,14 @@
 
 
 #include "Arduino.h"
+#include "Message.h"
 
 
 class ConfigurationPort
 {
 public:
   void Setup();
-  void Send(const byte buffer[], int length);
+  void Send(const Message message);
 };
 
 
