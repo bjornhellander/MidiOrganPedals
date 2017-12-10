@@ -54,57 +54,48 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataGridBehavior.cs" />
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="DeviceViewModel.cs" />
-    <Compile Include="Dispatcher.cs" />
-    <Compile Include="IDispatcher.cs" />
-    <Compile Include="IMainWindow.cs" />
-    <Compile Include="INotifiable.cs" />
-    <Compile Include="INotifiable{T}.cs" />
-    <Compile Include="IView.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="MessagesView.xaml.cs">
-      <DependentUpon>MessagesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MessageViewModel.cs" />
-    <Compile Include="Notifiable.cs" />
-    <Compile Include="Notifiable{T}.cs" />
-    <Compile Include="NotifyPropertyChangedBase.cs" />
-    <Compile Include="Property.cs" />
-    <Compile Include="SerialPortDevice.cs" />
-    <Compile Include="SerialPortDeviceProvider.cs" />
-    <Compile Include="SerialPortDeviceInfo.cs" />
-    <Compile Include="SimulatedDevice.cs" />
-    <Compile Include="SimulatedDeviceInfo.cs" />
-    <Compile Include="SimulatedDeviceProvider.cs" />
-    <Compile Include="ViewModelBase.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DeviceManager.cs" />
-    <Compile Include="DeviceProviderBase.cs" />
-    <Compile Include="IDeviceInfo.cs" />
-    <Compile Include="IDeviceManager.cs" />
-    <Compile Include="IDeviceProvider.cs" />
-    <Compile Include="IDevice.cs" />
-    <Compile Include="DeviceBase.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="UI\DataGridBehavior.cs" />
+    <Compile Include="UI\DelegateCommand.cs" />
+    <Compile Include="UI\DeviceViewModel.cs" />
+    <Compile Include="UI\IMainWindow.cs" />
+    <Compile Include="UI\IView.cs" />
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
-    <Page Include="MessagesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="UI\MainWindowViewModel.cs" />
+    <Compile Include="UI\MessagesView.xaml.cs">
+      <DependentUpon>MessagesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MessageViewModel.cs" />
+    <Compile Include="UI\NotifyPropertyChangedBase.cs" />
+    <Compile Include="UI\Property.cs" />
+    <Compile Include="UI\ViewModelBase.cs" />
+    <Compile Include="Utils\Dispatcher.cs" />
+    <Compile Include="Utils\IDispatcher.cs" />
+    <Compile Include="Utils\INotifiable.cs" />
+    <Compile Include="Utils\INotifiable{T}.cs" />
+    <Compile Include="Utils\Notifiable.cs" />
+    <Compile Include="Utils\Notifiable{T}.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Message.cs" />
+    <Compile Include="Devices\DeviceBase.cs" />
+    <Compile Include="Devices\DeviceManager.cs" />
+    <Compile Include="Devices\DeviceProviderBase.cs" />
+    <Compile Include="Devices\IDevice.cs" />
+    <Compile Include="Devices\IDeviceInfo.cs" />
+    <Compile Include="Devices\IDeviceManager.cs" />
+    <Compile Include="Devices\IDeviceProvider.cs" />
+    <Compile Include="Devices\Message.cs" />
+    <Compile Include="Devices\SerialPortDevice.cs" />
+    <Compile Include="Devices\SerialPortDeviceInfo.cs" />
+    <Compile Include="Devices\SerialPortDeviceProvider.cs" />
+    <Compile Include="Devices\SimulatedDevice.cs" />
+    <Compile Include="Devices\SimulatedDeviceInfo.cs" />
+    <Compile Include="Devices\SimulatedDeviceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -129,6 +120,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="UI\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\MessagesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

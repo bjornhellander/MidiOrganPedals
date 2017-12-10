@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using WpfMidiOrganPedals.Devices;
+using WpfMidiOrganPedals.UI;
+using WpfMidiOrganPedals.Utils;
 
 namespace WpfMidiOrganPedals
 {
