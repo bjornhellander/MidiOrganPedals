@@ -50,7 +50,7 @@ namespace WpfMidiOrganPedals.Devices
 
         private void HandleMessageFound(string text)
         {
-            var message = new Message(text);
+            var message = new RawMessage(text);
             NotifyDataReceived(message);
         }
     }

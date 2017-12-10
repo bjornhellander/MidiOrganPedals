@@ -58,6 +58,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Devices\RawMessage.cs" />
     <Compile Include="UI\DataGridBehavior.cs" />
     <Compile Include="UI\DelegateCommand.cs" />
     <Compile Include="UI\DeviceViewModel.cs" />

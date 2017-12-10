@@ -17,9 +17,10 @@ namespace WpfMidiOrganPedals.Devices
 
         public abstract void SendMessage(Message message);
 
-        protected void NotifyDataReceived(Message msg)
+        protected void NotifyDataReceived(RawMessage rawMessage)
         {
-            messageReceived.Notify(msg);
+            var message = new Message(rawMessage.Text);
+            messageReceived.Notify(message);
         }
 
         protected void NotifyException(Exception e)
