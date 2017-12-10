@@ -2,11 +2,11 @@
 {
     public class RawMessage
     {
-        public RawMessage(string text)
+        public RawMessage(byte[] rawData)
         {
-            Text = text;
+            RawData = rawData;
         }
 
-        public string Text { get; }
+        public byte[] RawData { get; }
     }
 }

@@ -11,6 +11,7 @@
 */
 
 #include "ConfigurationPort.h"
+#include "DebugMessage.h"
 
 
 static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
@@ -33,11 +34,14 @@ void loop()
   count++;
   char messageText[50];
   snprintf(messageText, sizeof(messageText), "Hello World (%d)\n", count);
-  RawMessage message(messageText);
-  configurationPort.Send(message);
+  DebugMessage message(messageText);
+  RawMessage rawMessage;
+  message.Pack(rawMessage);
+  configurationPort.Send(rawMessage);
 
   ledOn = !ledOn;
   digitalWrite(ledPin, ledOn);
 
   delay(1000);
 }
+

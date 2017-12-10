@@ -31,27 +31,13 @@ namespace WpfMidiOrganPedals.Devices
             {
                 var data = new byte[serialPort.BytesToRead];
                 serialPort.Read(data, 0, data.Length);
-
-                var text = "";
-                foreach (var @byte in data)
-                {
-                    var @char = (char)@byte;
-                    text = text + @char;
-                }
-
-                HandleMessageFound(text);
+                ProcessReceivedData(data);
             }
             catch (Exception e)
             {
                 NotifyException(e);
                 throw;
             }
-        }
-
-        private void HandleMessageFound(string text)
-        {
-            var message = new RawMessage(text);
-            NotifyDataReceived(message);
         }
     }
 }

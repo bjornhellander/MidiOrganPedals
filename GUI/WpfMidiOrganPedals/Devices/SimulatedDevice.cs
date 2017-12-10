@@ -5,6 +5,7 @@ namespace WpfMidiOrganPedals.Devices
 {
     public class SimulatedDevice : DeviceBase
     {
+        private RawMessagePacker rawMessagePacker = new RawMessagePacker();
         private Timer timer;
         private int count = 0;
 
@@ -38,8 +39,16 @@ namespace WpfMidiOrganPedals.Devices
 
         private void SendMessage(string text)
         {
-            var message = new RawMessage(text);
-            NotifyDataReceived(message);
+            var message = new Message(text);
+            var rawMessage = message.Pack();
+            var rawData = CreateRawData(rawMessage);
+            ProcessReceivedData(rawData);
+        }
+
+        private byte[] CreateRawData(RawMessage rawMessage)
+        {
+            var result = rawMessagePacker.Pack(rawMessage.RawData);
+            return result;
         }
     }
 }

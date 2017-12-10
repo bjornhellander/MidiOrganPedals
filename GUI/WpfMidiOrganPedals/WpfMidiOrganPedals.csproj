@@ -59,6 +59,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Devices\RawMessage.cs" />
+    <Compile Include="Devices\RawMessageInfo.cs" />
+    <Compile Include="Devices\RawMessagePacker.cs" />
+    <Compile Include="Devices\RawMessageUnpacker.cs" />
     <Compile Include="UI\DataGridBehavior.cs" />
     <Compile Include="UI\DelegateCommand.cs" />
     <Compile Include="UI\DeviceViewModel.cs" />

@@ -1,5 +1,5 @@
-#ifndef __Message_h
-#define __Message_h
+#ifndef __RawMessage_h
+#define __RawMessage_h
 
 
 #include "Arduino.h"
@@ -7,12 +7,19 @@
 
 class RawMessage
 {
-  char text[256];
+  byte data[255+4];
+  unsigned int size;
   
 public:
-  RawMessage(const char text[]);
+  RawMessage();
   
-  const char *GetText() const;
+  void Setup(byte id, const byte payloadData[], byte payloadSize);
+  
+  unsigned int GetSize() const;
+  const byte *GetData() const;
+  
+private:
+  byte CalcChecksum(const byte payloadData[], byte payloadSize);
 };
 
 

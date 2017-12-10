@@ -9,9 +9,8 @@ void ConfigurationPort::Setup()
 
 void ConfigurationPort::Send(const RawMessage message)
 {
-  const char *buffer = message.GetText();
-  byte length = strlen(buffer);
+  unsigned int length = message.GetSize();
+  const byte *buffer = message.GetData();
   Serial.write(buffer, length);
 }
-
 
