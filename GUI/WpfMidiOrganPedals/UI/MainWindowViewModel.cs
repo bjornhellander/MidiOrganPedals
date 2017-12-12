@@ -99,9 +99,26 @@ namespace WpfMidiOrganPedals.UI
             //// NOTE: This method is not called on the UI thread
             dispatcher.Invoke(() =>
             {
-                var viewModelMessage = new MessageViewModel(modelMessage.Text);
+                var viewModelMessage = CreateMessageViewModel(modelMessage);
                 receivedMessages.Add(viewModelMessage);
             });
+        }
+
+        private MessageViewModel CreateMessageViewModel(Message input)
+        {
+            string text;
+
+            if (input is DebugMessage)
+            {
+                text = ((DebugMessage)input).Text;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+            var output = new MessageViewModel(text);
+            return output;
         }
 
         private void HandleExceptionCaught(Exception e)

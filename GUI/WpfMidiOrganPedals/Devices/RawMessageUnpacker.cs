@@ -94,16 +94,15 @@ namespace WpfMidiOrganPedals.Devices
 
             if (payloadSize >= length)
             {
-                // We are done!
-                // TODO: Use id
-
+                // Verify checksum
                 var expectedChecksum = CalcChecksum(payloadData);
                 if (checksum != expectedChecksum)
                 {
                     Abort();
                 }
 
-                var message = new RawMessage(payloadData);
+                // We are done!
+                var message = new RawMessage(id, payloadData);
                 NotifyMessageFound(message);
 
                 Reset();

@@ -39,7 +39,7 @@ namespace WpfMidiOrganPedals.Devices
 
         private void SendMessage(string text)
         {
-            var message = new Message(text);
+            var message = new DebugMessage(text);
             var rawMessage = message.Pack();
             var rawData = CreateRawData(rawMessage);
             ProcessReceivedData(rawData);

@@ -58,6 +58,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Devices\DebugMessage.cs" />
+    <Compile Include="Devices\MessageUnpacker.cs" />
     <Compile Include="Devices\RawMessage.cs" />
     <Compile Include="Devices\RawMessageInfo.cs" />
     <Compile Include="Devices\RawMessagePacker.cs" />

@@ -6,6 +6,7 @@ namespace WpfMidiOrganPedals.Devices
     public abstract class DeviceBase : IDevice
     {
         private readonly RawMessageUnpacker rawMessageUnpacker = new RawMessageUnpacker();
+        private readonly MessageUnpacker messageUnpacker = new MessageUnpacker();
         private readonly Notifiable<Message> messageReceived = new Notifiable<Message>();
         private readonly Notifiable<Exception> exceptionCaught = new Notifiable<Exception>();
 
@@ -29,18 +30,7 @@ namespace WpfMidiOrganPedals.Devices
 
         private void HandleRawMessageFound(RawMessage rawMessage)
         {
-            var text = "";
-            foreach (var @byte in rawMessage.RawData)
-            {
-                if (@byte == 0)
-                {
-                    break;
-                }
-
-                text += (char)@byte;
-            }
-
-            var message = new Message(text);
+            var message = messageUnpacker.Unpack(rawMessage);
             messageReceived.Notify(message);
         }
 
