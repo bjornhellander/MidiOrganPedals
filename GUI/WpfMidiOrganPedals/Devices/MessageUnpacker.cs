@@ -13,6 +13,9 @@ namespace WpfMidiOrganPedals.Devices
                 case DebugMessage.Id:
                     output = new DebugMessage(input.RawData);
                     break;
+                case GeneralStatusMessage.Id:
+                    output = new GeneralStatusMessage(input.RawData);
+                    break;
                 default:
                     throw new NotImplementedException();
             }

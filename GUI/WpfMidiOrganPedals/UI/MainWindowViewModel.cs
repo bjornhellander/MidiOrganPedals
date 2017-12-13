@@ -112,6 +112,11 @@ namespace WpfMidiOrganPedals.UI
             {
                 text = ((DebugMessage)input).Text;
             }
+            else if (input is GeneralStatusMessage)
+            {
+                var i = (GeneralStatusMessage)input;
+                text = $"General Status: {i.ConfigurationOk}, {Convert.ToString(i.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(i.PlayedNotes, 2).PadLeft(32, '0')}, {i.NumberOfToggledPedals}, {i.NumberOfToggledNotes}, {i.NumberOfDiscardedBytes}";
+            }
             else
             {
                 throw new NotImplementedException();

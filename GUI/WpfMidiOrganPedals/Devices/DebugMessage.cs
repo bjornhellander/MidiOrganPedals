@@ -22,7 +22,7 @@
 
         public string Text { get; }
 
-        internal RawMessage Pack()
+        public override RawMessage Pack()
         {
             var rawData = new byte[Text.Length];
             for (var i = 0; i < Text.Length; i++)

@@ -30,24 +30,42 @@ namespace WpfMidiOrganPedals.Devices
 
         private void HandleTimerTick()
         {
-            count++;
-            var text = $"Hello ({count})";
-            SendMessage(text);
+            switch (count++ % 2)
+            {
+                case 0:
+                    SimulateDebugMessage();
+                    break;
+                case 1:
+                    SimulateGeneralStatusMessage();
+                    break;
+            }
 
             timer.Start();
         }
 
-        private void SendMessage(string text)
+        private void SimulateDebugMessage()
         {
+            var text = $"Hello ({count})";
             var message = new DebugMessage(text);
+            SimulateMessage(DebugMessage.Id, message);
+        }
+
+        private void SimulateGeneralStatusMessage()
+        {
+            var message = new GeneralStatusMessage();
+            SimulateMessage(GeneralStatusMessage.Id, message);
+        }
+
+        private void SimulateMessage(byte id, Message message)
+        {
             var rawMessage = message.Pack();
-            var rawData = CreateRawData(rawMessage);
+            var rawData = CreateRawData(id, rawMessage);
             ProcessReceivedData(rawData);
         }
 
-        private byte[] CreateRawData(RawMessage rawMessage)
+        private byte[] CreateRawData(byte id, RawMessage rawMessage)
         {
-            var result = rawMessagePacker.Pack(rawMessage.RawData);
+            var result = rawMessagePacker.Pack(id, rawMessage.RawData);
             return result;
         }
     }
