@@ -13,6 +13,7 @@ namespace WpfMidiOrganPedals.UI
         private readonly ObservableCollection<DeviceViewModel> availableDevices;
         private readonly ObservableCollection<MessageViewModel> receivedMessages;
         private readonly ObservableCollection<OnOffIndicatorViewModel> pressedPedals;
+        private readonly ObservableCollection<OnOffIndicatorViewModel> playedNotes;
 
         private IDevice currentDevice;
 
@@ -35,6 +36,13 @@ namespace WpfMidiOrganPedals.UI
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
                 pressedPedals.Add(new OnOffIndicatorViewModel((i + 1).ToString(), i % 2 != 0));
+            }
+
+            playedNotes = new ObservableCollection<OnOffIndicatorViewModel>();
+            PlayedNotes = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(playedNotes);
+            for (var i = 0; i < 8 * sizeof(uint); i++)
+            {
+                playedNotes.Add(new OnOffIndicatorViewModel((i + 1).ToString(), i % 2 == 0));
             }
         }
 
@@ -67,6 +75,13 @@ namespace WpfMidiOrganPedals.UI
                 pressedPedals.Add(new OnOffIndicatorViewModel(i.ToString(), false));
             }
 
+            playedNotes = new ObservableCollection<OnOffIndicatorViewModel>();
+            PlayedNotes = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(playedNotes);
+            for (var i = 0; i < 8 * sizeof(uint); i++)
+            {
+                playedNotes.Add(new OnOffIndicatorViewModel(i.ToString(), false));
+            }
+
             mainWindowView.DataContext = this;
         }
 
@@ -77,6 +92,8 @@ namespace WpfMidiOrganPedals.UI
         public ReadOnlyObservableCollection<MessageViewModel> ReceivedMessages { get; }
 
         public ReadOnlyObservableCollection<OnOffIndicatorViewModel> PressedPedals { get; }
+
+        public ReadOnlyObservableCollection<OnOffIndicatorViewModel> PlayedNotes { get; }
 
         private void HandleDeviceAdded(IDeviceInfo deviceInfo)
         {
@@ -137,8 +154,11 @@ namespace WpfMidiOrganPedals.UI
 
                 for (int i = 0; i < 8 * sizeof(uint); i++)
                 {
-                    var on = (input2.PressedPedals >> i) % 2 != 0;
-                    pressedPedals[i].IsOn.SetValue(on);
+                    var pressed = (input2.PressedPedals >> i) % 2 != 0;
+                    pressedPedals[i].IsOn.SetValue(pressed);
+
+                    var played = (input2.PlayedNotes >> i) % 2 != 0;
+                    playedNotes[i].IsOn.SetValue(played);
                 }
             }
             else

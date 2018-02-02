@@ -5,21 +5,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfMidiOrganPedals.UI"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="1300"
+             d:DesignHeight="200" d:DesignWidth="1300"
              d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
-    <StackPanel Orientation="Vertical">
-        <ItemsControl ItemsSource="{Binding PressedPedals}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox BorderBrush="Black" BorderThickness="2" Header="Pressed pedals" Grid.Row="0">
+            <ItemsControl ItemsSource="{Binding PressedPedals}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
             
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <local:OnOffIndicatorView/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </StackPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:OnOffIndicatorView/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </GroupBox>
+
+        <GroupBox BorderBrush="Black" BorderThickness="2" Header="Played notes" Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding PlayedNotes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:OnOffIndicatorView/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </GroupBox>
+    </Grid>
 </UserControl>
