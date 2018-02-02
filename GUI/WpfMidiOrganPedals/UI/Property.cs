@@ -7,6 +7,15 @@ namespace WpfMidiOrganPedals.UI
         private readonly Notifiable<T> valueChanged = new Notifiable<T>();
         private T currentValue;
 
+        public Property()
+        {
+        }
+
+        public Property(T initialValue)
+        {
+            currentValue = initialValue;
+        }
+
         public T Value
         {
             get

@@ -67,9 +67,13 @@
     <Compile Include="Devices\RawMessageInfo.cs" />
     <Compile Include="Devices\RawMessagePacker.cs" />
     <Compile Include="Devices\RawMessageUnpacker.cs" />
+    <Compile Include="UI\BoolToColorConverter.cs" />
     <Compile Include="UI\DataGridBehavior.cs" />
     <Compile Include="UI\DelegateCommand.cs" />
     <Compile Include="UI\DeviceViewModel.cs" />
+    <Compile Include="UI\GeneralStatusView.xaml.cs">
+      <DependentUpon>GeneralStatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\IMainWindow.cs" />
     <Compile Include="UI\IView.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
@@ -81,6 +85,10 @@
     </Compile>
     <Compile Include="UI\MessageViewModel.cs" />
     <Compile Include="UI\NotifyPropertyChangedBase.cs" />
+    <Compile Include="UI\OnOffIndicatorView.xaml.cs">
+      <DependentUpon>OnOffIndicatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OnOffIndicatorViewModel.cs" />
     <Compile Include="UI\Property.cs" />
     <Compile Include="UI\ViewModelBase.cs" />
     <Compile Include="Utils\Dispatcher.cs" />
@@ -132,6 +140,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="UI\GeneralStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,6 +151,10 @@
     <Page Include="UI\MessagesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\OnOffIndicatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

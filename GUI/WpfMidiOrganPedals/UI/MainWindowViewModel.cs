@@ -12,6 +12,7 @@ namespace WpfMidiOrganPedals.UI
         private readonly IDispatcher dispatcher;
         private readonly ObservableCollection<DeviceViewModel> availableDevices;
         private readonly ObservableCollection<MessageViewModel> receivedMessages;
+        private readonly ObservableCollection<OnOffIndicatorViewModel> pressedPedals;
 
         private IDevice currentDevice;
 
@@ -28,6 +29,13 @@ namespace WpfMidiOrganPedals.UI
             receivedMessages.Add(new MessageViewModel("B"));
             receivedMessages.Add(new MessageViewModel("C"));
             ReceivedMessages = new ReadOnlyObservableCollection<MessageViewModel>(receivedMessages);
+
+            pressedPedals = new ObservableCollection<OnOffIndicatorViewModel>();
+            PressedPedals = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pressedPedals);
+            for (var i = 0; i < 8 * sizeof(uint); i++)
+            {
+                pressedPedals.Add(new OnOffIndicatorViewModel((i + 1).ToString(), i % 2 != 0));
+            }
         }
 
         public MainWindowViewModel(
@@ -42,6 +50,7 @@ namespace WpfMidiOrganPedals.UI
             var noDeviceViewModel = new DeviceViewModel("-", null);
             availableDevices.Add(noDeviceViewModel);
             AvailableDevices = new ReadOnlyObservableCollection<DeviceViewModel>(availableDevices);
+
             SelectedDevice.SetValue(noDeviceViewModel);
             SelectedDevice.ValueChanged.Subscribe(HandleDeviceChanged);
 
@@ -51,6 +60,13 @@ namespace WpfMidiOrganPedals.UI
             deviceManager.DeviceAdded.Subscribe(HandleDeviceAdded);
             deviceManager.DeviceDeleted.Subscribe(HandleDeviceDeleted);
 
+            pressedPedals = new ObservableCollection<OnOffIndicatorViewModel>();
+            PressedPedals = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pressedPedals);
+            for (var i = 0; i < 8 * sizeof(uint); i++)
+            {
+                pressedPedals.Add(new OnOffIndicatorViewModel(i.ToString(), false));
+            }
+
             mainWindowView.DataContext = this;
         }
 
@@ -59,6 +75,8 @@ namespace WpfMidiOrganPedals.UI
         public Property<DeviceViewModel> SelectedDevice { get; } = new Property<DeviceViewModel>();
 
         public ReadOnlyObservableCollection<MessageViewModel> ReceivedMessages { get; }
+
+        public ReadOnlyObservableCollection<OnOffIndicatorViewModel> PressedPedals { get; }
 
         private void HandleDeviceAdded(IDeviceInfo deviceInfo)
         {
@@ -99,12 +117,12 @@ namespace WpfMidiOrganPedals.UI
             //// NOTE: This method is not called on the UI thread
             dispatcher.Invoke(() =>
             {
-                var viewModelMessage = CreateMessageViewModel(modelMessage);
+                var viewModelMessage = ProcessMessageViewModel(modelMessage);
                 receivedMessages.Add(viewModelMessage);
             });
         }
 
-        private MessageViewModel CreateMessageViewModel(Message input)
+        private MessageViewModel ProcessMessageViewModel(Message input)
         {
             string text;
 
@@ -114,8 +132,14 @@ namespace WpfMidiOrganPedals.UI
             }
             else if (input is GeneralStatusMessage)
             {
-                var i = (GeneralStatusMessage)input;
-                text = $"General Status: {i.ConfigurationOk}, {Convert.ToString(i.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(i.PlayedNotes, 2).PadLeft(32, '0')}, {i.NumberOfToggledPedals}, {i.NumberOfToggledNotes}, {i.NumberOfDiscardedBytes}";
+                var input2 = (GeneralStatusMessage)input;
+                text = $"General Status: {input2.ConfigurationOk}, {Convert.ToString(input2.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(input2.PlayedNotes, 2).PadLeft(32, '0')}, {input2.NumberOfToggledPedals}, {input2.NumberOfToggledNotes}, {input2.NumberOfDiscardedBytes}";
+
+                for (int i = 0; i < 8 * sizeof(uint); i++)
+                {
+                    var on = (input2.PressedPedals >> i) % 2 != 0;
+                    pressedPedals[i].IsOn.SetValue(on);
+                }
             }
             else
             {
