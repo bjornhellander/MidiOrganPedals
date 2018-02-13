@@ -1,3 +1,15 @@
+/* Simple "Hello World" example.
+
+   After uploading this to your board, use Serial Monitor
+   to view the message.  When Serial is selected from the
+   Tools > USB Type menu, the correct serial port must be
+   selected from the Tools > Serial Port AFTER Teensy is
+   running this code.  Teensy only becomes a serial device
+   while this code is running!  For non-Serial types,
+   the Serial port is emulated, so no port needs to be
+   selected.
+*/
+
 #include "MaintenancePort.h"
 #include "MidiPort.h"
 #include "DebugMessage.h"
@@ -10,7 +22,7 @@ static const uint8_t channel = 0;
 static const uint8_t velocity = 0;
 static const uint8_t firstNote = 30;
 static const uint8_t pedalPins[] = {
-  1, 2, 3, 4, 0
+  10, 11, 12, 13
 };
 
 
@@ -27,7 +39,7 @@ void setup()
 {
   maintenancePort.Setup();
   midiPort.Setup(channel, firstNote, velocity);
-  pedalManager.Setup(pedalPins);
+  pedalManager.Setup(pedalPins, sizeof(pedalPins)/sizeof(pedalPins[0]));
   pinMode(ledPin, OUTPUT);
 }
 

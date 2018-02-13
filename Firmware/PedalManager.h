@@ -19,7 +19,7 @@ class PedalManager
 public:
   PedalManager(MidiPort &midiPort);
   
-  void Setup(const uint8_t pedalPins[]);
+  void Setup(const uint8_t pedalPins[], uint8_t pedalPinCount);
 
   void Process();
 

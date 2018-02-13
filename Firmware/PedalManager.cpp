@@ -2,7 +2,7 @@
 
 
 // Value read for a pressed pedal
-#define PRESSED_PIN_STATE (1)
+#define PRESSED_PIN_STATE LOW
 
 
 PedalManager::PedalManager(MidiPort &midiPort)
@@ -11,12 +11,17 @@ PedalManager::PedalManager(MidiPort &midiPort)
 }
 
 
-void PedalManager::Setup(const uint8_t pedalPins[])
+void PedalManager::Setup(const uint8_t pedalPins[], uint8_t pedalPinCount)
 {
-  bool ignorePins = false;
   for (uint8_t i = 0; i < 32; i++) {
-    ignorePins = ignorePins || pedalPins[i] == 0;
-    this->pedalPins[i] = ignorePins ? 0 : pedalPins[i];
+    if (i < pedalPinCount && pedalPins[i] != 0) {
+      auto pin = pedalPins[i];
+      this->pedalPins[i] = pin;
+      pinMode(pin, INPUT_PULLUP);
+    }
+    else {
+      this->pedalPins[i] = 0;
+    }
   }
 
   for (uint8_t i = 0; i < 32; i++) {
