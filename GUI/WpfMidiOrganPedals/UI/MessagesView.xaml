@@ -10,22 +10,13 @@
              d:DesignHeight="200">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock Text="Devices:"/>
-            <ComboBox ItemsSource="{Binding AvailableDevices}"
-                      SelectedItem="{Binding SelectedDevice.Value}"
-                      DisplayMemberPath="Name"/>
-        </StackPanel>
-
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding ReceivedMessages}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" local:DataGridBehavior.AutoScroll="True">
+        <DataGrid Grid.Row="0" ItemsSource="{Binding ReceivedMessages}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" local:DataGridBehavior.AutoScroll="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>

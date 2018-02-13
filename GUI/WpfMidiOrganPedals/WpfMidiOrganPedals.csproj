@@ -70,6 +70,9 @@
     <Compile Include="UI\BoolToColorConverter.cs" />
     <Compile Include="UI\DataGridBehavior.cs" />
     <Compile Include="UI\DelegateCommand.cs" />
+    <Compile Include="UI\DeviceSelectionView.xaml.cs">
+      <DependentUpon>DeviceSelectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\DeviceViewModel.cs" />
     <Compile Include="UI\GeneralStatusView.xaml.cs">
       <DependentUpon>GeneralStatusView.xaml</DependentUpon>
@@ -140,6 +143,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="UI\DeviceSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\GeneralStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
