@@ -10,7 +10,7 @@
    selected.
 */
 
-#include "ConfigurationPort.h"
+#include "MaintenancePort.h"
 #include "DebugMessage.h"
 #include "GeneralStatusMessage.h"
 #include "PedalManager.h"
@@ -26,13 +26,13 @@ static int count = 0;
 static int ledOn = 1;
 
 
-static ConfigurationPort configurationPort;
+static MaintenancePort maintenancePort;
 static PedalManager pedalManager;
 
 
 void setup()
 {
-  configurationPort.Setup();
+  maintenancePort.Setup();
   pedalManager.Setup(pedalPins);
   pinMode(ledPin, OUTPUT);
 }
@@ -46,7 +46,7 @@ static void SendDebugMessage()
   DebugMessage message(messageText);
   RawMessage rawMessage;
   message.Pack(rawMessage);
-  configurationPort.Send(rawMessage);
+  maintenancePort.Send(rawMessage);
 }
 
 
@@ -63,7 +63,7 @@ static void SendGeneralStatusMessage()
   GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
   RawMessage rawMessage;
   message.Pack(rawMessage);
-  configurationPort.Send(rawMessage);
+  maintenancePort.Send(rawMessage);
 }
 
 

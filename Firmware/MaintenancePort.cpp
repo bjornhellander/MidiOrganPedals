@@ -1,13 +1,13 @@
-#include "ConfigurationPort.h"
+#include "MaintenancePort.h"
 
 
-void ConfigurationPort::Setup()
+void MaintenancePort::Setup()
 {
   Serial.begin(9600); // USB is always 12 Mbit/sec
 }
 
 
-void ConfigurationPort::Send(const RawMessage message)
+void MaintenancePort::Send(const RawMessage message)
 {
   unsigned int length = message.GetSize();
   const byte *buffer = message.GetData();

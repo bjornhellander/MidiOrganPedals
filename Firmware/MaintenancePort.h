@@ -1,12 +1,12 @@
-#ifndef __ConfigurationPort_h
-#define __ConfigurationPort_h
+#ifndef __MaintenancePort_h
+#define __MaintenancePort_h
 
 
 #include "Arduino.h"
 #include "RawMessage.h"
 
 
-class ConfigurationPort
+class MaintenancePort
 {
 public:
   void Setup();
