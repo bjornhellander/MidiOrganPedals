@@ -5,6 +5,12 @@
 #define PRESSED_PIN_STATE (1)
 
 
+PedalManager::PedalManager(MidiPort &midiPort)
+  : midiPort(midiPort)
+{
+}
+
+
 void PedalManager::Setup(const uint8_t pedalPins[])
 {
   bool ignorePins = false;
@@ -43,8 +49,20 @@ void PedalManager::Process()
     auto pin = pedalPins[i];
     if (pin != 0) {
       if (pedalsPressed[i] != notesPlayed[i]) {
-        //TODO: Play/stop note here
-        notesPlayed[i] = pedalsPressed[i];
+        bool ok;
+        if (pedalsPressed[i]) {
+          ok = midiPort.PlayNote(i);
+        }
+        else {
+          ok = midiPort.StopNote(i);
+        }
+
+        if (ok) {
+          notesPlayed[i] = pedalsPressed[i];
+        }
+        else {
+          break;
+        }
       }
     }
   }

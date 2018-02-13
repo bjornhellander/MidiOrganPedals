@@ -3,10 +3,13 @@
 
 
 #include "Arduino.h"
+#include "MidiPort.h"
 
 
 class PedalManager
 {
+  MidiPort &midiPort;
+  
   uint8_t pedalPins[32];
   bool pedalsPressed[32];
   bool notesPlayed[32];
@@ -14,6 +17,8 @@ class PedalManager
   uint16_t numberOfToggledNotes;
   
 public:
+  PedalManager(MidiPort &midiPort);
+  
   void Setup(const uint8_t pedalPins[]);
 
   void Process();
