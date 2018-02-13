@@ -6,8 +6,12 @@ namespace WpfMidiOrganPedals.Utils
     {
         public void Invoke(Action action)
         {
-            var nativeDispatcher = System.Windows.Application.Current.Dispatcher;
-            nativeDispatcher.Invoke(action);
+            var application = System.Windows.Application.Current;
+            if (application != null) // Can become null while shutting down. Just ignore it in that case.
+            {
+                var nativeDispatcher = application.Dispatcher;
+                nativeDispatcher.Invoke(action);
+            }
         }
     }
 }
