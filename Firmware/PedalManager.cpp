@@ -1,8 +1,9 @@
 #include "PedalManager.h"
+#include "Misc.h"
 
 
-// Value read for a pressed pedal
-#define PRESSED_PIN_STATE LOW
+static const int PRESSED_PIN_STATE = LOW; // Value read for a pressed pedal
+static const uint8_t UNUSED_PIN_NUMBER = 0;
 
 
 PedalManager::PedalManager(MidiPort &midiPort)
@@ -13,20 +14,19 @@ PedalManager::PedalManager(MidiPort &midiPort)
 
 void PedalManager::Setup(const uint8_t pedalPins[], uint8_t pedalPinCount)
 {
-  for (uint8_t i = 0; i < 32; i++) {
-    if (i < pedalPinCount && pedalPins[i] != 0) {
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
+    auto pedal = &pedals[i];
+    if (i < pedalPinCount && pedalPins[i] != UNUSED_PIN_NUMBER) {
       auto pin = pedalPins[i];
-      this->pedalPins[i] = pin;
+      pedal->pin = pin;
       pinMode(pin, INPUT_PULLUP);
     }
     else {
-      this->pedalPins[i] = 0;
+      pedal->pin = UNUSED_PIN_NUMBER;
     }
-  }
 
-  for (uint8_t i = 0; i < 32; i++) {
-    pedalsPressed[i] = false;
-    notesPlayed[i] = false;
+    pedal->pressed = false;
+    pedal->played = false;
   }
 
   numberOfToggledPedals = 0;
@@ -37,38 +37,36 @@ void PedalManager::Setup(const uint8_t pedalPins[], uint8_t pedalPinCount)
 void PedalManager::Process()
 {
   // Detect pedal changes
-  for (uint8_t i = 0; i < 32; i++) {
-    auto pin = pedalPins[i];
-    if (pin != 0) {
-      auto state = digitalRead(pin);
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
+    auto pedal = &pedals[i];
+    if (pedal->pin != UNUSED_PIN_NUMBER) {
+      auto state = digitalRead(pedal->pin);
       auto pressed = (state == PRESSED_PIN_STATE);
-      if (pedalsPressed[i] != pressed) {
+      if (pedal->pressed != pressed) {
         numberOfToggledPedals++;
-        pedalsPressed[i] = pressed;
+        pedal->pressed = pressed;
       }
     }
   }
 
   // Play notes
-  for (uint8_t i = 0; i < 32; i++) {
-    auto pin = pedalPins[i];
-    if (pin != 0) {
-      if (pedalsPressed[i] != notesPlayed[i]) {
-        bool ok;
-        if (pedalsPressed[i]) {
-          ok = midiPort.PlayNote(i);
-        }
-        else {
-          ok = midiPort.StopNote(i);
-        }
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
+    auto pedal = &pedals[i];
+    if (pedal->pressed != pedal->played) {
+      bool ok;
+      if (pedal->pressed) {
+        ok = midiPort.PlayNote(i);
+      }
+      else {
+        ok = midiPort.StopNote(i);
+      }
 
-        if (ok) {
-          notesPlayed[i] = pedalsPressed[i];
-          numberOfToggledNotes++;
-        }
-        else {
-          break;
-        }
+      if (ok) {
+        pedal->played = pedal->pressed;
+        numberOfToggledNotes++;
+      }
+      else {
+        break;
       }
     }
   }
@@ -77,23 +75,21 @@ void PedalManager::Process()
 
 uint32_t PedalManager::IsPedalPressed(uint8_t i)
 {
-  if (i < sizeof(pedalsPressed)/sizeof(pedalsPressed[0])) {
-    return pedalsPressed[i];
-  }
-  else {
+  if (i >= ARRAY_SIZE(pedals)) {
     return false;
   }
+  
+  return pedals[i].pressed;
 }
 
 
 uint32_t PedalManager::IsNotePlayed(uint8_t i)
 {
-  if (i < sizeof(notesPlayed)/sizeof(notesPlayed[0])) {
-    return notesPlayed[i];
-  }
-  else {
+  if (i >= ARRAY_SIZE(pedals)) {
     return false;
   }
+  
+  return pedals[i].played;
 }
 
 

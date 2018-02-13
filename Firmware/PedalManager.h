@@ -9,10 +9,13 @@
 class PedalManager
 {
   MidiPort &midiPort;
-  
-  uint8_t pedalPins[32];
-  bool pedalsPressed[32];
-  bool notesPlayed[32];
+
+  typedef struct {
+    uint8_t pin;
+    bool pressed;
+    bool played;
+  } PedalInfo;
+  PedalInfo pedals[32];
   uint16_t numberOfToggledPedals;
   uint16_t numberOfToggledNotes;
   
