@@ -72,14 +72,14 @@ namespace WpfMidiOrganPedals.UI
             PressedPedals = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pressedPedals);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                pressedPedals.Add(new OnOffIndicatorViewModel(i.ToString(), false));
+                pressedPedals.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
             }
 
             playedNotes = new ObservableCollection<OnOffIndicatorViewModel>();
             PlayedNotes = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(playedNotes);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                playedNotes.Add(new OnOffIndicatorViewModel(i.ToString(), false));
+                playedNotes.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
             }
 
             mainWindowView.DataContext = this;
