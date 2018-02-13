@@ -10,6 +10,8 @@
    selected.
 */
 
+#include "Misc.h"
+#include "ConfigurationManager.h"
 #include "MaintenancePort.h"
 #include "MidiPort.h"
 #include "DebugMessage.h"
@@ -19,17 +21,13 @@
 
 static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
 static const uint8_t channel = 0;
-static const uint8_t velocity = 0;
-static const uint8_t firstNote = 30;
-static const uint8_t pedalPins[] = {
-  10, 11, 12, 13
-};
 
 
 static int count = 0;
 static int ledOn = 1;
 
 
+static ConfigurationManager configurationManager;
 static MaintenancePort maintenancePort;
 static MidiPort midiPort;
 static PedalManager pedalManager(midiPort);
@@ -38,8 +36,15 @@ static PedalManager pedalManager(midiPort);
 void setup()
 {
   maintenancePort.Setup();
-  midiPort.Setup(channel, firstNote, velocity);
-  pedalManager.Setup(pedalPins, sizeof(pedalPins)/sizeof(pedalPins[0]));
+  
+  midiPort.Setup(channel, configurationManager.GetFirstNote(), configurationManager.GetVelocity());
+
+  uint8_t pedalPins[ConfigurationManager::MaxPedals];
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
+    pedalPins[i] = configurationManager.GetPedalPin(i);
+  }
+  pedalManager.Setup(pedalPins, ARRAY_SIZE(pedalPins));
+  
   pinMode(ledPin, OUTPUT);
 }
 
