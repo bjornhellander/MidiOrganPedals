@@ -48,7 +48,7 @@ static void SendDebugMessage()
 {
   char messageText[50];
   snprintf(messageText, sizeof(messageText), "Hello World (%d)\n", count);
-  
+
   DebugMessage message(messageText);
   RawMessage rawMessage;
   message.Pack(rawMessage);
@@ -61,7 +61,7 @@ static void SendGeneralStatusMessage()
   uint32_t pressedPedals = 0, playedNotes = 0;
   for (uint8_t i = 0; i < 32; i++) {
     pressedPedals |= pedalManager.IsPedalPressed(i) << i;
-    playedNotes = pedalManager.IsNotePlayed(i) << i;
+    playedNotes |= pedalManager.IsNotePlayed(i) << i;
   }
   auto numberOfToggledPedals = pedalManager.GetNumberOfToggledPedals();
   auto numberOfToggledNotes = pedalManager.GetNumberOfToggledNotes();

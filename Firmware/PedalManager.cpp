@@ -64,6 +64,7 @@ void PedalManager::Process()
 
         if (ok) {
           notesPlayed[i] = pedalsPressed[i];
+          numberOfToggledNotes++;
         }
         else {
           break;
