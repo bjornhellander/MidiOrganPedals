@@ -13,19 +13,27 @@
 #include "ConfigurationPort.h"
 #include "DebugMessage.h"
 #include "GeneralStatusMessage.h"
+#include "PedalManager.h"
 
 
 static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
+static const uint8_t pedalPins[] = {
+  1, 2, 3, 4, 0
+};
+
+
 static int count = 0;
 static int ledOn = 1;
 
 
 static ConfigurationPort configurationPort;
+static PedalManager pedalManager;
 
 
 void setup()
 {
   configurationPort.Setup();
+  pedalManager.Setup(pedalPins);
   pinMode(ledPin, OUTPUT);
 }
 
@@ -34,6 +42,7 @@ static void SendDebugMessage()
 {
   char messageText[50];
   snprintf(messageText, sizeof(messageText), "Hello World (%d)\n", count);
+  
   DebugMessage message(messageText);
   RawMessage rawMessage;
   message.Pack(rawMessage);
@@ -43,7 +52,15 @@ static void SendDebugMessage()
 
 static void SendGeneralStatusMessage()
 {
-  GeneralStatusMessage message(true, 0b00110011001100110011001100110011, 0b01010101010101010101010101010101, 12, 13, 14);
+  uint32_t pressedPedals = 0, playedNotes = 0;
+  for (uint8_t i = 0; i < 32; i++) {
+    pressedPedals |= pedalManager.IsPedalPressed(i) << i;
+    playedNotes = pedalManager.IsNotePlayed(i) << i;
+  }
+  auto numberOfToggledPedals = pedalManager.GetNumberOfToggledPedals();
+  auto numberOfToggledNotes = pedalManager.GetNumberOfToggledNotes();
+  
+  GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
   RawMessage rawMessage;
   message.Pack(rawMessage);
   configurationPort.Send(rawMessage);
@@ -52,6 +69,8 @@ static void SendGeneralStatusMessage()
 
 void loop()
 {
+  pedalManager.Process();
+
   switch (count++ % 2) {
     case 0:
       SendDebugMessage();
@@ -61,7 +80,7 @@ void loop()
       SendGeneralStatusMessage();
       break;
   }
-  
+
   ledOn = !ledOn;
   digitalWrite(ledPin, ledOn);
 

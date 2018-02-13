@@ -1,0 +1,29 @@
+#ifndef __PedalManager_h
+#define __PedalManager_h
+
+
+#include "Arduino.h"
+
+
+class PedalManager
+{
+  uint8_t pedalPins[32];
+  bool pedalsPressed[32];
+  bool notesPlayed[32];
+  uint16_t numberOfToggledPedals;
+  uint16_t numberOfToggledNotes;
+  
+public:
+  void Setup(const uint8_t pedalPins[]);
+
+  void Process();
+
+  uint32_t IsPedalPressed(uint8_t i);
+  uint32_t IsNotePlayed(uint8_t i);
+  uint16_t GetNumberOfToggledPedals();
+  uint16_t GetNumberOfToggledNotes();
+};
+
+
+#endif
+
