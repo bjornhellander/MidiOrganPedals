@@ -41,5 +41,13 @@ namespace WpfMidiOrganPedals.Devices
             uint temp4 = bytes[index++];
             value = (temp4 << 24) + (temp3 << 16) + (temp2 << 8) + temp1;
         }
+
+        internal void Finish()
+        {
+            if (index != bytes.Length)
+            {
+                throw new ArgumentException("Incorrect message length");
+            }
+        }
     }
 }

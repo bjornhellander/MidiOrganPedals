@@ -20,6 +20,7 @@
             extractor.Get(ref numberOfToggledPedals);
             extractor.Get(ref numberOfToggledNotes);
             extractor.Get(ref numberOfDiscardedBytes);
+            extractor.Finish();
         }
 
         public GeneralStatusMessage()
