@@ -24,6 +24,8 @@ static PedalManager pedalManager(midiPort);
 
 void setup()
 {
+  configurationManager.Setup();
+  
   maintenancePort.Setup();
   
   midiPort.Setup(channel, configurationManager.GetFirstNote(), configurationManager.GetVelocity());
