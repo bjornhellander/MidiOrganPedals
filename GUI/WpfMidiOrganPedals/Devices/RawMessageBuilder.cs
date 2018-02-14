@@ -17,6 +17,20 @@ namespace WpfMidiOrganPedals.Devices
             bytes.Add(value);
         }
 
+        internal void Add(byte[] value, int size)
+        {
+            if (value.Length > size)
+            {
+                throw new ArgumentException("Array too long", nameof(value));
+            }
+
+            for (var i = 0; i < size; i++)
+            {
+                var temp = i < value.Length ? value[i] : (byte)0;
+                bytes.Add(temp);
+            }
+        }
+
         internal void Add(ushort value)
         {
             unchecked

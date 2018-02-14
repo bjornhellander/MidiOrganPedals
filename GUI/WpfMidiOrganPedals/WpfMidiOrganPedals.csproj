@@ -59,6 +59,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Devices\DebugMessage.cs" />
+    <Compile Include="Devices\ConfigurationStatusMessage.cs" />
     <Compile Include="Devices\GeneralStatusMessage.cs" />
     <Compile Include="Devices\MessageUnpacker.cs" />
     <Compile Include="Devices\RawMessage.cs" />

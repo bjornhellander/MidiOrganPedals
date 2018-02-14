@@ -14,6 +14,20 @@ void RawMessagePacker::Add(bool value)
 }
 
 
+void RawMessagePacker::Add(uint8_t value)
+{
+  AddImpl(value);
+}
+
+
+void RawMessagePacker::Add(uint8_t value[], uint8_t count)
+{
+  for (uint8_t i = 0; i < count; i++) {
+    AddImpl(value[i]);
+  }
+}
+
+
 void RawMessagePacker::Add(uint16_t value)
 {
   AddImpl((uint8_t)value);

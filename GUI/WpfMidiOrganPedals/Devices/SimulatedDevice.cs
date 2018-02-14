@@ -30,13 +30,16 @@ namespace WpfMidiOrganPedals.Devices
 
         private void HandleTimerTick()
         {
-            switch (count++ % 2)
+            switch (count++ % 3)
             {
                 case 0:
                     SimulateDebugMessage();
                     break;
                 case 1:
                     SimulateGeneralStatusMessage();
+                    break;
+                case 2:
+                    SimulateConfigurationStatusMessage();
                     break;
             }
 
@@ -54,6 +57,12 @@ namespace WpfMidiOrganPedals.Devices
         {
             var message = new GeneralStatusMessage();
             SimulateMessage(GeneralStatusMessage.Id, message);
+        }
+
+        private void SimulateConfigurationStatusMessage()
+        {
+            var message = new ConfigurationStatusMessage();
+            SimulateMessage(ConfigurationStatusMessage.Id, message);
         }
 
         private void SimulateMessage(byte id, Message message)

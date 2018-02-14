@@ -1,21 +1,10 @@
-/* Simple "Hello World" example.
-
-   After uploading this to your board, use Serial Monitor
-   to view the message.  When Serial is selected from the
-   Tools > USB Type menu, the correct serial port must be
-   selected from the Tools > Serial Port AFTER Teensy is
-   running this code.  Teensy only becomes a serial device
-   while this code is running!  For non-Serial types,
-   the Serial port is emulated, so no port needs to be
-   selected.
-*/
-
 #include "Misc.h"
 #include "ConfigurationManager.h"
 #include "MaintenancePort.h"
 #include "MidiPort.h"
 #include "DebugMessage.h"
 #include "GeneralStatusMessage.h"
+#include "ConfigurationStatusMessage.h"
 #include "PedalManager.h"
 
 
@@ -71,7 +60,25 @@ static void SendGeneralStatusMessage()
   auto numberOfToggledPedals = pedalManager.GetNumberOfToggledPedals();
   auto numberOfToggledNotes = pedalManager.GetNumberOfToggledNotes();
   
-  GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
+  GeneralStatusMessage message(pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
+  RawMessage rawMessage;
+  message.Pack(rawMessage);
+  maintenancePort.Send(rawMessage);
+}
+
+
+static void SendConfigurationStatusMessage()
+{
+  auto firstNote = configurationManager.GetFirstNote();
+  auto velocity = configurationManager.GetVelocity();
+  auto debouncingTime = configurationManager.GetDebouncingTime();
+
+  uint8_t pedalPins[ConfigurationManager::MaxPedals];
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
+    pedalPins[i] = configurationManager.GetPedalPin(i);
+  }
+
+  ConfigurationStatusMessage message(true, firstNote, velocity, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
   RawMessage rawMessage;
   message.Pack(rawMessage);
   maintenancePort.Send(rawMessage);
@@ -82,13 +89,17 @@ void loop()
 {
   pedalManager.Process();
 
-  switch (count++ % 2) {
+  switch (count++ % 3) {
     case 0:
       SendDebugMessage();
       break;
 
     case 1:
       SendGeneralStatusMessage();
+      break;
+
+    case 2:
+      SendConfigurationStatusMessage();
       break;
   }
 

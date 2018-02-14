@@ -16,6 +16,8 @@ public:
   RawMessagePacker(uint8_t id);
 
   void Add(bool value);
+  void Add(uint8_t value);
+  void Add(uint8_t value[], uint8_t count);
   void Add(uint16_t value);
   void Add(uint32_t value);
   void Add(char value[], uint8_t count);

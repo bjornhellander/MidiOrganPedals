@@ -25,6 +25,15 @@ namespace WpfMidiOrganPedals.Devices
             value = temp;
         }
 
+        internal void Get(ref byte[] value, int size)
+        {
+            value = new byte[size];
+            for (var i = 0; i < size; i++)
+            {
+                value[i] = bytes[index++];
+            }
+        }
+
         internal void Get(ref ushort value)
         {
             uint temp1 = bytes[index++];
