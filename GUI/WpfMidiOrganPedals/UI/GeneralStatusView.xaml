@@ -11,38 +11,40 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <GroupBox BorderBrush="Black" BorderThickness="2" Header="Pressed pedals" Grid.Row="0">
-            <ItemsControl ItemsSource="{Binding PressedPedals}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+        <TextBlock Text="Pressed pedals:" Grid.Row="0"/>
+        
+        <ItemsControl ItemsSource="{Binding PressedPedals}" Grid.Row="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <local:OnOffIndicatorView/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </GroupBox>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:OnOffIndicatorView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-        <GroupBox BorderBrush="Black" BorderThickness="2" Header="Played notes" Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding PlayedNotes}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+        <TextBlock Text="Played notes:" Grid.Row="2" Margin="0, 5, 0, 0"/>
+        
+        <ItemsControl ItemsSource="{Binding PlayedNotes}" Grid.Row="3">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <local:OnOffIndicatorView/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </GroupBox>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:OnOffIndicatorView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>
