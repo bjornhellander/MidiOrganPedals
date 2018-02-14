@@ -18,7 +18,8 @@ public:
   void Add(bool value);
   void Add(uint16_t value);
   void Add(uint32_t value);
-  
+  void Add(char value[], uint8_t count);
+
   void CopyTo(RawMessage &result);
 
 private:

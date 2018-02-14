@@ -30,6 +30,17 @@ void RawMessagePacker::Add(uint32_t value)
 }
 
 
+void RawMessagePacker::Add(char value[], uint8_t count)
+{
+  auto length = strlen(value);
+
+  for (uint8_t i = 0; i < count; i++) {
+    char ch = i < length ? value[i] : '\0';
+    AddImpl((uint8_t)ch);
+  }
+}
+
+
 void RawMessagePacker::AddImpl(uint8_t value)
 {
   if (size < sizeof(data)) {

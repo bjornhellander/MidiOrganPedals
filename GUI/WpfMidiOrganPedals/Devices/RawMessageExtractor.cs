@@ -42,6 +42,23 @@ namespace WpfMidiOrganPedals.Devices
             value = (temp4 << 24) + (temp3 << 16) + (temp2 << 8) + temp1;
         }
 
+        internal void Get(ref string text, int length)
+        {
+            var result = "";
+            var done = false;
+            for (var i = 0; i < length; i++)
+            {
+                var temp = bytes[index++];
+                done = done || temp == 0;
+                if (!done)
+                {
+                    result += (char)temp;
+                }
+            }
+            
+            text = result;
+        }
+
         internal void Finish()
         {
             if (index != bytes.Length)

@@ -1,4 +1,5 @@
 #include "DebugMessage.h"
+#include "RawMessagePacker.h"
 
 
 #define DEBUG_MESSAGE_ID (0x00)
@@ -14,18 +15,8 @@ DebugMessage::DebugMessage(const char text[])
 
 void DebugMessage::Pack(RawMessage &result)
 {
-  byte payload[255];
-
-  byte size = min(sizeof(payload), strlen(text));
-  
-  for (byte i = 0; i < size;  i++) {
-    payload[i] = text[i];
-  }
-
-  for (byte i = size; i < sizeof(payload); i++) {
-    payload[i] = 0;
-  }
-
-  result.Setup(DEBUG_MESSAGE_ID, payload, size);
+  RawMessagePacker packer(DEBUG_MESSAGE_ID);
+  packer.Add(text, sizeof(text));
+  packer.CopyTo(result);
 }
 

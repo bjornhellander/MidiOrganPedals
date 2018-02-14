@@ -8,7 +8,7 @@
 
 class DebugMessage
 {
-  char text[256];
+  char text[32];
   
 public:
   DebugMessage(const char text[]);

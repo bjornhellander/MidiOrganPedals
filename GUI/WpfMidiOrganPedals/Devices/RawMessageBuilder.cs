@@ -37,6 +37,15 @@ namespace WpfMidiOrganPedals.Devices
             }
         }
 
+        internal void Add(string text, int length)
+        {
+            for (var i = 0; i < length; i++)
+            {
+                var @char = i < text.Length ? text[i] : (char)0;
+                bytes.Add((byte)@char);
+            }
+        }
+
         internal byte[] GetData()
         {
             return bytes.ToArray();
