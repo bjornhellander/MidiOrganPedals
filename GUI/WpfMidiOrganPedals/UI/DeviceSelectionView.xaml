@@ -9,9 +9,7 @@
              d:DesignHeight="50" d:DesignWidth="200">
     <GroupBox BorderBrush="Black" BorderThickness="2" Header="Selected device" Grid.Row="0">
         <StackPanel Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding AvailableDevices}"
-                    SelectedItem="{Binding SelectedDevice.Value}"
-                    DisplayMemberPath="Name"/>
+            <ComboBox ItemsSource="{Binding AvailableDevices}" SelectedItem="{Binding SelectedDevice.Value}" DisplayMemberPath="Name"/>
         </StackPanel>
     </GroupBox>
 </UserControl>
