@@ -69,6 +69,9 @@
     <Compile Include="Devices\RawMessagePacker.cs" />
     <Compile Include="Devices\RawMessageUnpacker.cs" />
     <Compile Include="UI\BoolToColorConverter.cs" />
+    <Compile Include="UI\ConfigurationStatusView.xaml.cs">
+      <DependentUpon>ConfigurationStatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\DataGridBehavior.cs" />
     <Compile Include="UI\DelegateCommand.cs" />
     <Compile Include="UI\DeviceSelectionView.xaml.cs">
@@ -144,6 +147,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="UI\ConfigurationStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\DeviceSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

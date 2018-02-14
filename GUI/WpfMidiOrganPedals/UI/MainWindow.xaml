@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:WpfMidiOrganPedals.UI"
         mc:Ignorable="d"
         Title="MIDI Organ Pedals"
-        Height="350"
+        Height="500"
         Width="1400"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -19,10 +20,14 @@
         <local:DeviceSelectionView  Margin="0,0,0,5" Grid.Row="0"/>
         
         <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,5" Grid.Row="1">
-            <local:GeneralStatusView/>
+            <local:ConfigurationStatusView/>
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,5" Grid.Row="2">
+            <local:GeneralStatusView/>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,5" Grid.Row="3">
             <local:MessagesView/>
         </Border>
     </Grid>

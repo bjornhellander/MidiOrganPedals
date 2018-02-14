@@ -14,6 +14,7 @@ namespace WpfMidiOrganPedals.UI
         private readonly ObservableCollection<MessageViewModel> receivedMessages;
         private readonly ObservableCollection<OnOffIndicatorViewModel> pressedPedals;
         private readonly ObservableCollection<OnOffIndicatorViewModel> playedNotes;
+        private readonly ObservableCollection<OnOffIndicatorViewModel> pedalPins;
 
         private IDevice currentDevice;
 
@@ -43,6 +44,17 @@ namespace WpfMidiOrganPedals.UI
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
                 playedNotes.Add(new OnOffIndicatorViewModel((i + 1).ToString(), i % 2 == 0));
+            }
+
+            FirstNote.SetValue(40);
+            Velocity.SetValue(70);
+            DebouncingTime.SetValue(125);
+
+            pedalPins = new ObservableCollection<OnOffIndicatorViewModel>();
+            PedalPins = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pedalPins);
+            for (var i = 0; i < 8 * sizeof(uint); i++)
+            {
+                pedalPins.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
             }
         }
 
@@ -82,6 +94,13 @@ namespace WpfMidiOrganPedals.UI
                 playedNotes.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
             }
 
+            pedalPins = new ObservableCollection<OnOffIndicatorViewModel>();
+            PedalPins = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pedalPins);
+            for (var i = 0; i < 8 * sizeof(uint); i++)
+            {
+                pedalPins.Add(new OnOffIndicatorViewModel("", false));
+            }
+
             mainWindowView.DataContext = this;
         }
 
@@ -94,6 +113,14 @@ namespace WpfMidiOrganPedals.UI
         public ReadOnlyObservableCollection<OnOffIndicatorViewModel> PressedPedals { get; }
 
         public ReadOnlyObservableCollection<OnOffIndicatorViewModel> PlayedNotes { get; }
+
+        public Property<int> FirstNote { get; } = new Property<int>();
+
+        public Property<int> Velocity { get; } = new Property<int>();
+
+        public Property<int> DebouncingTime { get; } = new Property<int>();
+
+        public ReadOnlyObservableCollection<OnOffIndicatorViewModel> PedalPins { get; }
 
         private void HandleDeviceAdded(IDeviceInfo deviceInfo)
         {
@@ -167,7 +194,15 @@ namespace WpfMidiOrganPedals.UI
                 var pedalPinsText = string.Join(", ", input2.PedalPins.Select(x => x.ToString()));
                 text = $"Configuration Status: {input2.ConfigurationOk}, {input2.FirstNote}, {input2.Velocity}, {input2.DebouncingTime}, [{pedalPinsText}]";
 
-                // TODO: Update UI
+                FirstNote.SetValue(input2.FirstNote);
+                Velocity.SetValue(input2.Velocity);
+                DebouncingTime.SetValue(input2.DebouncingTime);
+
+                for (var i = 0; i < input2.PedalPins.Length; i++)
+                {
+                    var obj = pedalPins[i];
+                    obj.Text.SetValue(input2.PedalPins[i].ToString());
+                }
             }
             else
             {
