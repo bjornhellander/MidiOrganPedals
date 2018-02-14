@@ -68,6 +68,9 @@
     <Compile Include="Devices\RawMessageInfo.cs" />
     <Compile Include="Devices\RawMessagePacker.cs" />
     <Compile Include="Devices\RawMessageUnpacker.cs" />
+    <Compile Include="UI\BoolInverter.cs" />
+    <Compile Include="UI\BoolToHiddenVisibleConverter.cs" />
+    <Compile Include="UI\BoolToVisibleHiddenConverter.cs" />
     <Compile Include="UI\BoolToColorConverter.cs" />
     <Compile Include="UI\ConfigurationStatusView.xaml.cs">
       <DependentUpon>ConfigurationStatusView.xaml</DependentUpon>
@@ -87,6 +90,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\MainWindowViewModel.cs" />
+    <Compile Include="UI\ManualCommand.cs" />
     <Compile Include="UI\MessagesView.xaml.cs">
       <DependentUpon>MessagesView.xaml</DependentUpon>
     </Compile>

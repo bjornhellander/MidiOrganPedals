@@ -1,14 +1,19 @@
 ﻿<UserControl x:Class="WpfMidiOrganPedals.UI.ConfigurationStatusView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfMidiOrganPedals.UI"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="1300"
              d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <local:BoolInverter x:Key="boolInverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -22,16 +27,16 @@
         </Grid.ColumnDefinitions>
         
         <TextBlock Text="First Note:" Grid.Row="0" Grid.Column="0" Margin="0, 0, 5, 5"/>
-        <TextBlock Text="{Binding FirstNote.Value}" Grid.Row="0" Grid.Column="1"/>
+        <TextBox Text="{Binding FirstNote.Value}" IsReadOnly="{Binding Path=IsEditingConfiguration.Value, Converter={StaticResource boolInverter}}" Grid.Row="0" Grid.Column="1"/>
 
         <TextBlock Text="Velocity:" Grid.Row="1" Grid.Column="0" Margin="0, 0, 5, 5"/>
-        <TextBlock Text="{Binding Velocity.Value}" Grid.Row="1" Grid.Column="1"/>
+        <TextBox Text="{Binding Velocity.Value}" IsReadOnly="{Binding Path=IsEditingConfiguration.Value, Converter={StaticResource boolInverter}}" Grid.Row="1" Grid.Column="1"/>
 
         <TextBlock Text="Debouncing:" Grid.Row="2" Grid.Column="0" Margin="0, 0, 5, 5"/>
-        <TextBlock Text="{Binding DebouncingTime.Value}" Grid.Row="2" Grid.Column="1"/>
+        <TextBox Text="{Binding DebouncingTime.Value}" IsReadOnly="{Binding Path=IsEditingConfiguration.Value, Converter={StaticResource boolInverter}}" Grid.Row="2" Grid.Column="1"/>
 
         <TextBlock Text="Pins:" Grid.Row="3" Grid.Column="0" Margin="0, 0, 5, 0"/>
-        <ItemsControl ItemsSource="{Binding PedalPins}" Grid.Row="4" Grid.ColumnSpan="2">
+        <ItemsControl ItemsSource="{Binding PedalPins}" Grid.Row="4" Grid.ColumnSpan="2" Margin="0, 0, 0, 50">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" />
@@ -44,5 +49,10 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0, 0, 0, 10">
+            <Button Content="Edit" Command="{Binding Path=EditCommand}" Margin="10, 0, 10, 0" Padding="5"/>
+            <Button Content="Apply" Command="{Binding Path=ApplyCommand}" Margin="10, 0, 10, 0" Padding="5"/>
+        </StackPanel>
     </Grid>
 </UserControl>
