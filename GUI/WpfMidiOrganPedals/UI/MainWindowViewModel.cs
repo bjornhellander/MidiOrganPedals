@@ -193,7 +193,7 @@ namespace WpfMidiOrganPedals.UI
             else if (input is GeneralStatusMessage)
             {
                 var input2 = (GeneralStatusMessage)input;
-                text = $"General Status: {input2.ConfigurationOk}, {Convert.ToString(input2.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(input2.PlayedNotes, 2).PadLeft(32, '0')}, {input2.NumberOfToggledPedals}, {input2.NumberOfToggledNotes}, {input2.NumberOfDiscardedBytes}";
+                text = $"General Status: {input2.ConfigurationOk}, {Convert.ToString(input2.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(input2.PlayedNotes, 2).PadLeft(32, '0')}, {input2.NumberOfToggledPedals}, {input2.NumberOfToggledNotes}, {input2.NumberOfReceivedBytes}, {input2.NumberOfDiscardedBytes}";
 
                 for (int i = 0; i < 8 * sizeof(uint); i++)
                 {

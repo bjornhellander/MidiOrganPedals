@@ -14,3 +14,15 @@ void MaintenancePort::Send(const RawMessage message)
   Serial.write(buffer, length);
 }
 
+
+uint8_t MaintenancePort::Receive(uint8_t buffer[], uint8_t bufferSize)
+{
+  uint8_t size = 0;
+  while (Serial.available() > 0 && size < bufferSize) {
+    byte temp = Serial.read();
+    buffer[size++] = temp;
+  }
+
+  return size;
+}
+

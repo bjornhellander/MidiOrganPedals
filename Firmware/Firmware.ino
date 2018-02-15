@@ -14,6 +14,7 @@ static const uint8_t channel = 0;
 
 static int count = 0;
 static int ledOn = 1;
+static uint16_t numberOfReceivedBytes = 0;
 
 
 static ConfigurationManager configurationManager;
@@ -62,7 +63,7 @@ static void SendGeneralStatusMessage()
   auto numberOfToggledPedals = pedalManager.GetNumberOfToggledPedals();
   auto numberOfToggledNotes = pedalManager.GetNumberOfToggledNotes();
   
-  GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
+  GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, numberOfReceivedBytes, 14);
   RawMessage rawMessage;
   message.Pack(rawMessage);
   maintenancePort.Send(rawMessage);
@@ -87,8 +88,21 @@ static void SendConfigurationStatusMessage()
 }
 
 
+static void ProcessMaintenanceMessages()
+{
+  uint8_t buffer[128];
+  uint8_t length = maintenancePort.Receive(buffer, sizeof(buffer));
+
+  for (uint8_t i = 0; i < length; i++) {
+    numberOfReceivedBytes++;
+  }
+}
+
+
 void loop()
 {
+  ProcessMaintenanceMessages();
+  
   pedalManager.Process();
 
   switch (count++ % 3) {

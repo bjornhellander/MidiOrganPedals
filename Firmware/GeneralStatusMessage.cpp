@@ -11,6 +11,7 @@ GeneralStatusMessage::GeneralStatusMessage(
   uint32_t playedNotes,
   uint16_t numberOfToggledPedals,
   uint16_t numberOfToggledNotes,
+  uint16_t numberOfReceivedBytes,
   uint16_t numberOfDiscardedBytes)
 {
   this->configurationOk = configurationOk;
@@ -18,6 +19,7 @@ GeneralStatusMessage::GeneralStatusMessage(
   this->playedNotes = playedNotes;
   this->numberOfToggledPedals = numberOfToggledPedals;
   this->numberOfToggledNotes = numberOfToggledNotes;
+  this->numberOfReceivedBytes = numberOfReceivedBytes;
   this->numberOfDiscardedBytes = numberOfDiscardedBytes;
 }
 
@@ -30,6 +32,7 @@ void GeneralStatusMessage::Pack(RawMessage &result)
   packer.Add(playedNotes);
   packer.Add(numberOfToggledPedals);
   packer.Add(numberOfToggledNotes);
+  packer.Add(numberOfReceivedBytes);
   packer.Add(numberOfDiscardedBytes);
   packer.CopyTo(result);
 }

@@ -9,6 +9,7 @@
         private uint playedNotes;
         private ushort numberOfToggledPedals;
         private ushort numberOfToggledNotes;
+        private ushort numberOfReceivedBytes;
         private ushort numberOfDiscardedBytes;
 
         public GeneralStatusMessage(byte[] rawData)
@@ -19,6 +20,7 @@
             extractor.Get(ref playedNotes);
             extractor.Get(ref numberOfToggledPedals);
             extractor.Get(ref numberOfToggledNotes);
+            extractor.Get(ref numberOfReceivedBytes);
             extractor.Get(ref numberOfDiscardedBytes);
             extractor.Finish();
         }
@@ -30,6 +32,7 @@
             playedNotes = 0b10101010101010101010101010101010;
             numberOfToggledPedals = 33;
             numberOfToggledNotes = 34;
+            numberOfReceivedBytes = 456;
             numberOfDiscardedBytes = 123;
         }
 
@@ -38,6 +41,7 @@
         public uint PlayedNotes => playedNotes;
         public ushort NumberOfToggledPedals => numberOfToggledPedals;
         public ushort NumberOfToggledNotes => numberOfToggledNotes;
+        public ushort NumberOfReceivedBytes => numberOfReceivedBytes;
         public ushort NumberOfDiscardedBytes => numberOfDiscardedBytes;
 
         public override RawMessage Pack()
@@ -48,6 +52,7 @@
             rawMessageBuilder.Add(playedNotes);
             rawMessageBuilder.Add(numberOfToggledPedals);
             rawMessageBuilder.Add(numberOfToggledNotes);
+            rawMessageBuilder.Add(numberOfReceivedBytes);
             rawMessageBuilder.Add(numberOfDiscardedBytes);
             var rawData = rawMessageBuilder.GetData();
             var message = new RawMessage(Id, rawData);

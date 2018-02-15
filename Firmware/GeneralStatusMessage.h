@@ -13,6 +13,7 @@ class GeneralStatusMessage
   uint32_t playedNotes;
   uint16_t numberOfToggledPedals;
   uint16_t numberOfToggledNotes;
+  uint16_t numberOfReceivedBytes;
   uint16_t numberOfDiscardedBytes;
   
 public:
@@ -22,6 +23,7 @@ public:
     uint32_t playedNotes,
     uint16_t numberOfToggledPedals,
     uint16_t numberOfToggledNotes,
+    uint16_t numberOfReceivedBytes,
     uint16_t numberOfDiscardedBytes);
 
   void Pack(RawMessage &result);
