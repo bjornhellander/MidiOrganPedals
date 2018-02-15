@@ -1,5 +1,4 @@
-﻿using System;
-using System.Timers;
+﻿using System.Timers;
 
 namespace WpfMidiOrganPedals.Devices
 {
@@ -23,9 +22,9 @@ namespace WpfMidiOrganPedals.Devices
             timer = null;
         }
 
-        public override void SendMessage(Message message)
+        protected override void SendMessage(byte[] buffer)
         {
-            throw new NotImplementedException();
+            // We don't need to do anything with outgoing messages...
         }
 
         private void HandleTimerTick()

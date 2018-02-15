@@ -19,9 +19,9 @@ namespace WpfMidiOrganPedals.Devices
             serialPort = null;
         }
 
-        public override void SendMessage(Message message)
+        protected override void SendMessage(byte[] buffer)
         {
-            throw new NotImplementedException();
+            serialPort.Write(buffer, 0, buffer.Length);
         }
 
         private void HandleDataReceived()

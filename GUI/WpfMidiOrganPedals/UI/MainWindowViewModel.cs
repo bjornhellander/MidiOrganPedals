@@ -103,7 +103,7 @@ namespace WpfMidiOrganPedals.UI
             PedalPins = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pedalPins);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                pedalPins.Add(new OnOffIndicatorViewModel("", false));
+                pedalPins.Add(new OnOffIndicatorViewModel("0", false));
             }
 
             EditCommand = new ManualCommand(HandleEditCommand, true);
@@ -265,6 +265,9 @@ namespace WpfMidiOrganPedals.UI
             {
                 pedalPin.IsEditable.SetValue(false);
             }
+
+            var message = new ConfigurationRequestMessage(FirstNote.Value, Velocity.Value, DebouncingTime.Value, PedalPins.Select(x => int.Parse(x.Text.Value)).ToArray());
+            currentDevice.SendMessage(message);
         }
     }
 }

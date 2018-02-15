@@ -58,6 +58,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Devices\ConfigurationRequestMessage.cs" />
+    <Compile Include="Devices\ConfigurationMessageBase.cs" />
     <Compile Include="Devices\DebugMessage.cs" />
     <Compile Include="Devices\ConfigurationStatusMessage.cs" />
     <Compile Include="Devices\GeneralStatusMessage.cs" />

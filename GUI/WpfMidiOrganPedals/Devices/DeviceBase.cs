@@ -5,6 +5,7 @@ namespace WpfMidiOrganPedals.Devices
 {
     public abstract class DeviceBase : IDevice
     {
+        private readonly RawMessagePacker rawMessagePacker = new RawMessagePacker();
         private readonly RawMessageUnpacker rawMessageUnpacker = new RawMessageUnpacker();
         private readonly MessageUnpacker messageUnpacker = new MessageUnpacker();
         private readonly Notifiable<Message> messageReceived = new Notifiable<Message>();
@@ -21,7 +22,14 @@ namespace WpfMidiOrganPedals.Devices
 
         public abstract void Close();
 
-        public abstract void SendMessage(Message message);
+        public void SendMessage(Message message)
+        {
+            var rawMessage = message.Pack();
+            var buffer = rawMessagePacker.Pack(rawMessage.Id, rawMessage.RawData);
+            SendMessage(buffer);
+        }
+
+        protected abstract void SendMessage(byte[] buffer);
 
         protected void ProcessReceivedData(byte[] data)
         {
