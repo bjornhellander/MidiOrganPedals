@@ -7,14 +7,12 @@
 
 
 ConfigurationStatusMessage::ConfigurationStatusMessage(
-  bool configurationOk,
   uint8_t firstNote,
   uint8_t velocity,
   uint8_t debouncingTime,
   uint8_t pedalPins[],
   uint8_t pedalPinCount)
 {
-  this->configurationOk = configurationOk;
   this->firstNote = firstNote;
   this->velocity = velocity;
   this->debouncingTime = debouncingTime;
@@ -33,7 +31,6 @@ ConfigurationStatusMessage::ConfigurationStatusMessage(
 void ConfigurationStatusMessage::Pack(RawMessage &result)
 {
   RawMessagePacker packer(CONFIGURATION_STATUS_MESSAGE_ID);
-  packer.Add(configurationOk);
   packer.Add(firstNote);
   packer.Add(velocity);
   packer.Add(debouncingTime);

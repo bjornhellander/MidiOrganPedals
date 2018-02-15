@@ -62,7 +62,7 @@ static void SendGeneralStatusMessage()
   auto numberOfToggledPedals = pedalManager.GetNumberOfToggledPedals();
   auto numberOfToggledNotes = pedalManager.GetNumberOfToggledNotes();
   
-  GeneralStatusMessage message(pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
+  GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, 14);
   RawMessage rawMessage;
   message.Pack(rawMessage);
   maintenancePort.Send(rawMessage);
@@ -80,7 +80,7 @@ static void SendConfigurationStatusMessage()
     pedalPins[i] = configurationManager.GetPedalPin(i);
   }
 
-  ConfigurationStatusMessage message(true, firstNote, velocity, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
+  ConfigurationStatusMessage message(firstNote, velocity, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
   RawMessage rawMessage;
   message.Pack(rawMessage);
   maintenancePort.Send(rawMessage);

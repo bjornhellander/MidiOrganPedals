@@ -8,7 +8,6 @@
 
 class ConfigurationStatusMessage
 {
-  bool configurationOk;
   uint8_t firstNote;
   uint8_t velocity;
   uint8_t debouncingTime;
@@ -16,7 +15,6 @@ class ConfigurationStatusMessage
   
 public:
   ConfigurationStatusMessage(
-    bool configurationOk,
     uint8_t firstNote,
     uint8_t velocity,
     uint8_t debouncingTime,

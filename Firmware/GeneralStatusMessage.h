@@ -8,6 +8,7 @@
 
 class GeneralStatusMessage
 {
+  bool configurationOk;
   uint32_t pressedPedals;
   uint32_t playedNotes;
   uint16_t numberOfToggledPedals;
@@ -16,6 +17,7 @@ class GeneralStatusMessage
   
 public:
   GeneralStatusMessage(
+    bool configurationOk,
     uint32_t pressedPedals,
     uint32_t playedNotes,
     uint16_t numberOfToggledPedals,

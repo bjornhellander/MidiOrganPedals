@@ -193,7 +193,7 @@ namespace WpfMidiOrganPedals.UI
             else if (input is GeneralStatusMessage)
             {
                 var input2 = (GeneralStatusMessage)input;
-                text = $"General Status: {Convert.ToString(input2.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(input2.PlayedNotes, 2).PadLeft(32, '0')}, {input2.NumberOfToggledPedals}, {input2.NumberOfToggledNotes}, {input2.NumberOfDiscardedBytes}";
+                text = $"General Status: {input2.ConfigurationOk}, {Convert.ToString(input2.PressedPedals, 2).PadLeft(32, '0')}, {Convert.ToString(input2.PlayedNotes, 2).PadLeft(32, '0')}, {input2.NumberOfToggledPedals}, {input2.NumberOfToggledNotes}, {input2.NumberOfDiscardedBytes}";
 
                 for (int i = 0; i < 8 * sizeof(uint); i++)
                 {
@@ -208,7 +208,7 @@ namespace WpfMidiOrganPedals.UI
             {
                 var input2 = (ConfigurationStatusMessage)input;
                 var pedalPinsText = string.Join(", ", input2.PedalPins.Select(x => x.ToString()));
-                text = $"Configuration Status: {input2.ConfigurationOk}, {input2.FirstNote}, {input2.Velocity}, {input2.DebouncingTime}, [{pedalPinsText}]";
+                text = $"Configuration Status: {input2.FirstNote}, {input2.Velocity}, {input2.DebouncingTime}, [{pedalPinsText}]";
 
                 if (!IsEditingConfiguration.Value)
                 {
