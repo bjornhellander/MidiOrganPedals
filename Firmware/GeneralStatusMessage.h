@@ -8,6 +8,10 @@
 
 class GeneralStatusMessage
 {
+public:
+  static const uint8_t Id = 0x01;
+
+private:
   bool configurationOk;
   uint32_t pressedPedals;
   uint32_t playedNotes;

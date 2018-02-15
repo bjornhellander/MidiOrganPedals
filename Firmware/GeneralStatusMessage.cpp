@@ -2,9 +2,6 @@
 #include "RawMessageBuilder.h"
 
 
-#define GENERAL_STATUS_MESSAGE_ID (0x01)
-
-
 GeneralStatusMessage::GeneralStatusMessage(
   bool configurationOk,
   uint32_t pressedPedals,
@@ -26,7 +23,7 @@ GeneralStatusMessage::GeneralStatusMessage(
 
 void GeneralStatusMessage::Pack(RawMessage &result)
 {
-  RawMessageBuilder packer(GENERAL_STATUS_MESSAGE_ID);
+  RawMessageBuilder packer;
   packer.Add(configurationOk);
   packer.Add(pressedPedals);
   packer.Add(playedNotes);

@@ -7,19 +7,16 @@
 
 class RawMessage
 {
-  byte data[255+4];
-  unsigned int size;
+  byte data[255];
+  byte size;
   
 public:
   RawMessage();
   
-  void Setup(byte id, const byte payloadData[], byte payloadSize);
+  void Setup(const byte payloadData[], byte payloadSize);
   
-  unsigned int GetSize() const;
+  byte GetSize() const;
   const byte *GetData() const;
-  
-private:
-  byte CalcChecksum(const byte payloadData[], byte payloadSize);
 };
 
 

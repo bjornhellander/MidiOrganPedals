@@ -2,9 +2,6 @@
 #include "RawMessageBuilder.h"
 
 
-#define DEBUG_MESSAGE_ID (0x00)
-
-
 DebugMessage::DebugMessage(const char text[])
 {
   auto length = sizeof(this->text) - 1;
@@ -15,7 +12,7 @@ DebugMessage::DebugMessage(const char text[])
 
 void DebugMessage::Pack(RawMessage &result)
 {
-  RawMessageBuilder packer(DEBUG_MESSAGE_ID);
+  RawMessageBuilder packer;
   packer.Add(text, sizeof(text));
   packer.CopyTo(result);
 }

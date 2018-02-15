@@ -8,6 +8,10 @@
 
 class DebugMessage
 {
+public:
+  static const uint8_t Id = 0x00;
+
+private:
   char text[32];
   
 public:

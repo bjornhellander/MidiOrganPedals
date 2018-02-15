@@ -8,12 +8,11 @@
 
 class RawMessageBuilder
 {
-  uint8_t id;
   uint8_t data[255];
   uint32_t size;
   
 public:
-  RawMessageBuilder(uint8_t id);
+  RawMessageBuilder();
 
   void Add(bool value);
   void Add(uint8_t value);

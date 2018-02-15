@@ -3,9 +3,6 @@
 #include "Misc.h"
 
 
-#define CONFIGURATION_STATUS_MESSAGE_ID (0x02)
-
-
 ConfigurationStatusMessage::ConfigurationStatusMessage(
   uint8_t firstNote,
   uint8_t velocity,
@@ -30,7 +27,7 @@ ConfigurationStatusMessage::ConfigurationStatusMessage(
 
 void ConfigurationStatusMessage::Pack(RawMessage &result)
 {
-  RawMessageBuilder packer(CONFIGURATION_STATUS_MESSAGE_ID);
+  RawMessageBuilder packer;
   packer.Add(firstNote);
   packer.Add(velocity);
   packer.Add(debouncingTime);

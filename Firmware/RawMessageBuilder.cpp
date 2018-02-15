@@ -1,10 +1,9 @@
 #include "RawMessageBuilder.h"
 
 
-RawMessageBuilder::RawMessageBuilder(uint8_t id)
+RawMessageBuilder::RawMessageBuilder()
 {
   this->size = 0;
-  this->id = id;
 }
 
 
@@ -68,6 +67,6 @@ void RawMessageBuilder::AddImpl(uint8_t value)
 
 void RawMessageBuilder::CopyTo(RawMessage &result)
 {
-  result.Setup(id, data, size);
+  result.Setup(data, size);
 }
 

@@ -6,6 +6,7 @@
 #include "GeneralStatusMessage.h"
 #include "ConfigurationStatusMessage.h"
 #include "PedalManager.h"
+#include "RawMessagePacker.h"
 
 
 static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
@@ -49,7 +50,9 @@ static void SendDebugMessage()
   DebugMessage message(messageText);
   RawMessage rawMessage;
   message.Pack(rawMessage);
-  maintenancePort.Send(rawMessage);
+  RawMessagePacker rawMessagePacker;
+  rawMessagePacker.Pack(DebugMessage::Id, rawMessage);
+  maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
 }
 
 
@@ -66,7 +69,9 @@ static void SendGeneralStatusMessage()
   GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, numberOfReceivedBytes, 14);
   RawMessage rawMessage;
   message.Pack(rawMessage);
-  maintenancePort.Send(rawMessage);
+  RawMessagePacker rawMessagePacker;
+  rawMessagePacker.Pack(GeneralStatusMessage::Id, rawMessage);
+  maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
 }
 
 
@@ -84,7 +89,9 @@ static void SendConfigurationStatusMessage()
   ConfigurationStatusMessage message(firstNote, velocity, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
   RawMessage rawMessage;
   message.Pack(rawMessage);
-  maintenancePort.Send(rawMessage);
+  RawMessagePacker rawMessagePacker;
+  rawMessagePacker.Pack(ConfigurationStatusMessage::Id, rawMessage);
+  maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
 }
 
 

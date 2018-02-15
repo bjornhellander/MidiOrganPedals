@@ -8,6 +8,10 @@
 
 class ConfigurationStatusMessage
 {
+public:
+  static const uint8_t Id = 0x02;
+
+private:
   uint8_t firstNote;
   uint8_t velocity;
   uint8_t debouncingTime;

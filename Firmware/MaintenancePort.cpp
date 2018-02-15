@@ -7,11 +7,9 @@ void MaintenancePort::Setup()
 }
 
 
-void MaintenancePort::Send(const RawMessage message)
+void MaintenancePort::Send(const uint8_t buffer[], uint16_t bufferSize)
 {
-  unsigned int length = message.GetSize();
-  const byte *buffer = message.GetData();
-  Serial.write(buffer, length);
+  Serial.write(buffer, bufferSize);
 }
 
 

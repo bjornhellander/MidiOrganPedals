@@ -10,7 +10,7 @@ class MaintenancePort
 {
 public:
   void Setup();
-  void Send(const RawMessage message);
+  void Send(const uint8_t buffer[], uint16_t size);
   uint8_t Receive(uint8_t buffer[], uint8_t size);
 };
 
