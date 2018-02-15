@@ -1,5 +1,5 @@
 #include "GeneralStatusMessage.h"
-#include "RawMessagePacker.h"
+#include "RawMessageBuilder.h"
 
 
 #define GENERAL_STATUS_MESSAGE_ID (0x01)
@@ -26,7 +26,7 @@ GeneralStatusMessage::GeneralStatusMessage(
 
 void GeneralStatusMessage::Pack(RawMessage &result)
 {
-  RawMessagePacker packer(GENERAL_STATUS_MESSAGE_ID);
+  RawMessageBuilder packer(GENERAL_STATUS_MESSAGE_ID);
   packer.Add(configurationOk);
   packer.Add(pressedPedals);
   packer.Add(playedNotes);

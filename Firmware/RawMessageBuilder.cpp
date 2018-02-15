@@ -1,26 +1,26 @@
-#include "RawMessagePacker.h"
+#include "RawMessageBuilder.h"
 
 
-RawMessagePacker::RawMessagePacker(uint8_t id)
+RawMessageBuilder::RawMessageBuilder(uint8_t id)
 {
   this->size = 0;
   this->id = id;
 }
 
 
-void RawMessagePacker::Add(bool value)
+void RawMessageBuilder::Add(bool value)
 {
   AddImpl(value ? 1 : 0);
 }
 
 
-void RawMessagePacker::Add(uint8_t value)
+void RawMessageBuilder::Add(uint8_t value)
 {
   AddImpl(value);
 }
 
 
-void RawMessagePacker::Add(uint8_t value[], uint8_t count)
+void RawMessageBuilder::Add(uint8_t value[], uint8_t count)
 {
   for (uint8_t i = 0; i < count; i++) {
     AddImpl(value[i]);
@@ -28,14 +28,14 @@ void RawMessagePacker::Add(uint8_t value[], uint8_t count)
 }
 
 
-void RawMessagePacker::Add(uint16_t value)
+void RawMessageBuilder::Add(uint16_t value)
 {
   AddImpl((uint8_t)value);
   AddImpl((uint8_t)(value >> 8));
 }
 
 
-void RawMessagePacker::Add(uint32_t value)
+void RawMessageBuilder::Add(uint32_t value)
 {
   AddImpl((uint8_t)value);
   AddImpl((uint8_t)(value >> 8));
@@ -44,7 +44,7 @@ void RawMessagePacker::Add(uint32_t value)
 }
 
 
-void RawMessagePacker::Add(char value[], uint8_t count)
+void RawMessageBuilder::Add(char value[], uint8_t count)
 {
   auto length = strlen(value);
 
@@ -55,7 +55,7 @@ void RawMessagePacker::Add(char value[], uint8_t count)
 }
 
 
-void RawMessagePacker::AddImpl(uint8_t value)
+void RawMessageBuilder::AddImpl(uint8_t value)
 {
   if (size < sizeof(data)) {
     data[size++] = value;
@@ -66,7 +66,7 @@ void RawMessagePacker::AddImpl(uint8_t value)
 }
 
 
-void RawMessagePacker::CopyTo(RawMessage &result)
+void RawMessageBuilder::CopyTo(RawMessage &result)
 {
   result.Setup(id, data, size);
 }

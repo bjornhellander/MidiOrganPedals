@@ -1,5 +1,5 @@
 #include "ConfigurationStatusMessage.h"
-#include "RawMessagePacker.h"
+#include "RawMessageBuilder.h"
 #include "Misc.h"
 
 
@@ -30,7 +30,7 @@ ConfigurationStatusMessage::ConfigurationStatusMessage(
 
 void ConfigurationStatusMessage::Pack(RawMessage &result)
 {
-  RawMessagePacker packer(CONFIGURATION_STATUS_MESSAGE_ID);
+  RawMessageBuilder packer(CONFIGURATION_STATUS_MESSAGE_ID);
   packer.Add(firstNote);
   packer.Add(velocity);
   packer.Add(debouncingTime);

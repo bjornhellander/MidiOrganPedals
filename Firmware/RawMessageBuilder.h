@@ -1,19 +1,19 @@
-#ifndef __RawMessagePacker_h
-#define __RawMessagePacker_h
+#ifndef __RawMessageBuilder_h
+#define __RawMessageBuilder_h
 
 
 #include "Arduino.h"
 #include "RawMessage.h"
 
 
-class RawMessagePacker
+class RawMessageBuilder
 {
   uint8_t id;
   uint8_t data[255];
   uint32_t size;
   
 public:
-  RawMessagePacker(uint8_t id);
+  RawMessageBuilder(uint8_t id);
 
   void Add(bool value);
   void Add(uint8_t value);
