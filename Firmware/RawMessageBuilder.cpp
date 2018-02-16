@@ -65,8 +65,8 @@ void RawMessageBuilder::AddImpl(uint8_t value)
 }
 
 
-void RawMessageBuilder::CopyTo(RawMessage &result)
+void RawMessageBuilder::CopyTo(uint8_t id, RawMessage &result)
 {
-  result.Setup(data, size);
+  result.Setup(id, data, size);
 }
 

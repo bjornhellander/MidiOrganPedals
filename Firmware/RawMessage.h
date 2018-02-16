@@ -7,14 +7,16 @@
 
 class RawMessage
 {
+  byte id;
   byte data[255];
   byte size;
   
 public:
   RawMessage();
   
-  void Setup(const byte payloadData[], byte payloadSize);
-  
+  void Setup(byte id, const byte payloadData[], byte payloadSize);
+
+  byte GetId() const;
   byte GetSize() const;
   const byte *GetData() const;
 };

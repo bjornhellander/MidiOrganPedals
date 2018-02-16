@@ -12,7 +12,7 @@ class RawMessagePacker
   uint16_t size;
   
 public:
-  void Pack(uint8_t id, const RawMessage &input);
+  void Pack(const RawMessage &input);
   
   uint16_t GetSize() const;
   const uint8_t *GetData() const;

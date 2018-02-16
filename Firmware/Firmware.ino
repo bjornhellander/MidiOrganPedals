@@ -51,7 +51,7 @@ static void SendDebugMessage()
   RawMessage rawMessage;
   message.Pack(rawMessage);
   RawMessagePacker rawMessagePacker;
-  rawMessagePacker.Pack(DebugMessage::Id, rawMessage);
+  rawMessagePacker.Pack(rawMessage);
   maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
 }
 
@@ -70,7 +70,7 @@ static void SendGeneralStatusMessage()
   RawMessage rawMessage;
   message.Pack(rawMessage);
   RawMessagePacker rawMessagePacker;
-  rawMessagePacker.Pack(GeneralStatusMessage::Id, rawMessage);
+  rawMessagePacker.Pack(rawMessage);
   maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
 }
 
@@ -90,7 +90,7 @@ static void SendConfigurationStatusMessage()
   RawMessage rawMessage;
   message.Pack(rawMessage);
   RawMessagePacker rawMessagePacker;
-  rawMessagePacker.Pack(ConfigurationStatusMessage::Id, rawMessage);
+  rawMessagePacker.Pack(rawMessage);
   maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
 }
 

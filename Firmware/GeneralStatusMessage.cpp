@@ -31,6 +31,6 @@ void GeneralStatusMessage::Pack(RawMessage &result)
   packer.Add(numberOfToggledNotes);
   packer.Add(numberOfReceivedBytes);
   packer.Add(numberOfDiscardedBytes);
-  packer.CopyTo(result);
+  packer.CopyTo(Id, result);
 }
 

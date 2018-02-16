@@ -4,8 +4,9 @@
 #define START_BYTE (0xFF)
 
 
-void RawMessagePacker::Pack(uint8_t id, const RawMessage &input)
+void RawMessagePacker::Pack(const RawMessage &input)
 {
+  uint8_t id = input.GetId();
   const uint8_t *payloadData = input.GetData();
   uint8_t payloadSize = input.GetSize();
   uint8_t checksum = CalcChecksum(payloadData, payloadSize);

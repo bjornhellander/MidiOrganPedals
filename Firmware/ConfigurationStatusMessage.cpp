@@ -32,6 +32,6 @@ void ConfigurationStatusMessage::Pack(RawMessage &result)
   packer.Add(velocity);
   packer.Add(debouncingTime);
   packer.Add(pedalPins, ARRAY_SIZE(pedalPins));
-  packer.CopyTo(result);
+  packer.CopyTo(Id, result);
 }
 

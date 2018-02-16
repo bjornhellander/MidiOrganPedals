@@ -14,6 +14,6 @@ void DebugMessage::Pack(RawMessage &result)
 {
   RawMessageBuilder packer;
   packer.Add(text, sizeof(text));
-  packer.CopyTo(result);
+  packer.CopyTo(Id, result);
 }
 

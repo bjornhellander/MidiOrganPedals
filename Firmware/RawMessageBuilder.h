@@ -21,7 +21,7 @@ public:
   void Add(uint32_t value);
   void Add(char value[], uint8_t count);
 
-  void CopyTo(RawMessage &result);
+  void CopyTo(uint8_t id, RawMessage &result);
 
 private:
   void AddImpl(uint8_t value);
