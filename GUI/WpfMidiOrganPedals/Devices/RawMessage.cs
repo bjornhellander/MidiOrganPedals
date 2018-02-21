@@ -1,9 +1,16 @@
-﻿namespace WpfMidiOrganPedals.Devices
+﻿using System;
+
+namespace WpfMidiOrganPedals.Devices
 {
     public class RawMessage
     {
         public RawMessage(byte id, byte[] rawData)
         {
+            if (rawData == null)
+            {
+                throw new ArgumentNullException(nameof(rawData));
+            }
+
             Id = id;
             RawData = rawData;
         }

@@ -3,10 +3,11 @@
 
 
 #include "Arduino.h"
+#include "RawMessageHandler.h"
 #include "RawMessage.h"
 
 
-class RawMessagePacker
+class RawMessagePacker : public RawMessageHandler
 {
   uint8_t data[255+4];
   uint16_t size;
@@ -16,9 +17,6 @@ public:
   
   uint16_t GetSize() const;
   const uint8_t *GetData() const;
-  
-private:
-  uint8_t CalcChecksum(const uint8_t payloadData[], uint8_t payloadSize);
 };
 
 

@@ -5,8 +5,11 @@
 #include "DebugMessage.h"
 #include "GeneralStatusMessage.h"
 #include "ConfigurationStatusMessage.h"
+#include "ConfigurationRequestMessage.h"
 #include "PedalManager.h"
 #include "RawMessagePacker.h"
+#include "RawMessageUnpacker.h"
+#include "Misc.h"
 
 
 static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
@@ -22,6 +25,7 @@ static ConfigurationManager configurationManager;
 static MaintenancePort maintenancePort;
 static MidiPort midiPort;
 static PedalManager pedalManager(midiPort);
+static RawMessageUnpacker receivedMessageUnpacker;
 
 
 void setup()
@@ -95,12 +99,34 @@ static void SendConfigurationStatusMessage()
 }
 
 
+static void ProcessConfigurationRequestMessage(const RawMessage &rawMessage)
+{
+  ConfigurationRequestMessage message;
+  
+  if (message.Unpack(rawMessage)) {
+    configurationManager.Setup(message.FirstNote, message.Velocity, message.DebouncingTime, message.PedalPins, ARRAY_SIZE(message.PedalPins));
+  }
+}
+
+
 static void ProcessMaintenanceMessages()
 {
   uint8_t buffer[128];
   uint8_t length = maintenancePort.Receive(buffer, sizeof(buffer));
 
   for (uint8_t i = 0; i < length; i++) {
+    RawMessage rawMessage;
+    if (receivedMessageUnpacker.Unpack(buffer[i], rawMessage)) {
+      ledOn = !ledOn;
+      digitalWrite(ledPin, ledOn);
+
+      switch (rawMessage.GetId()) {
+        case ConfigurationRequestMessage::Id:
+          ProcessConfigurationRequestMessage(rawMessage);
+          break;
+      }
+    }
+
     numberOfReceivedBytes++;
   }
 }
@@ -125,9 +151,6 @@ void loop()
       SendConfigurationStatusMessage();
       break;
   }
-
-  ledOn = !ledOn;
-  digitalWrite(ledPin, ledOn);
 
   delay(1000);
 }

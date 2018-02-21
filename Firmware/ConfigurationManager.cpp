@@ -1,25 +1,51 @@
 #include "ConfigurationManager.h"
 #include "Misc.h"
+#include <EEPROM.h>
 
 
-// These should be retrieved from EEPROM
-static const uint8_t FirstNote = 30;
-static const uint8_t Velocity = 60;
-static const uint8_t DebouncingTime = 0;
-static const uint8_t PedalPins[] = {
-  10, 11, 12, 13
-};
+void ConfigurationManager::ReadValues()
+{
+  static const uint16_t size = sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
+
+  if (EEPROM.length() < size)
+  {
+    return;
+  }
+
+  EEPROM.get(0, firstNote);
+  EEPROM.get(1, velocity);
+  EEPROM.get(2, debouncingTime);
+  EEPROM.get(3, pedalPins);
+}
 
 
 void ConfigurationManager::Setup()
 {
-  SetupImpl(FirstNote, Velocity, DebouncingTime, PedalPins, ARRAY_SIZE(PedalPins));
+  ReadValues();
+  SetupImpl(firstNote, velocity, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
+}
+
+
+void ConfigurationManager::WriteValues()
+{
+  static const uint16_t size = sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
+
+  if (EEPROM.length() < size)
+  {
+    return;
+  }
+
+  EEPROM.put(0, firstNote);
+  EEPROM.put(1, velocity);
+  EEPROM.put(2, debouncingTime);
+  EEPROM.put(3, pedalPins);
 }
 
 
 void ConfigurationManager::Setup(uint8_t firstNote, uint8_t velocity, uint8_t debouncingTime, const uint8_t pedalPins[], uint8_t pedalPinCount)
 {
   SetupImpl(firstNote, velocity, debouncingTime, pedalPins, pedalPinCount);
+  WriteValues();
 }
 
 

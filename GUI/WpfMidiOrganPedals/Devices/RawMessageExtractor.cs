@@ -9,6 +9,11 @@ namespace WpfMidiOrganPedals.Devices
 
         public RawMessageExtractor(byte[] bytes)
         {
+            if (bytes == null)
+            {
+                throw new ArgumentNullException(nameof(bytes));
+            }
+
             this.bytes = bytes;
             this.index = 0;
         }

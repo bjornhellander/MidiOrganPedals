@@ -99,6 +99,7 @@ namespace WpfMidiOrganPedals.Devices
                 if (checksum != expectedChecksum)
                 {
                     Abort();
+                    return;
                 }
 
                 // We are done!

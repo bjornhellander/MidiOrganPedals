@@ -28,6 +28,8 @@ public:
 
 private:
   void SetupImpl(uint8_t firstNote, uint8_t velocity, uint8_t debouncingTime, const uint8_t pedalPins[], uint8_t pedalPinCount);
+  void ReadValues();
+  void WriteValues();
 };
 
 
