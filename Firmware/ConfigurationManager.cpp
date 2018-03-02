@@ -1,4 +1,5 @@
 #include "ConfigurationManager.h"
+#include "ChecksumCalculator.h"
 #include "Misc.h"
 #include <EEPROM.h>
 
@@ -12,10 +13,24 @@ void ConfigurationManager::ReadValues()
     return;
   }
 
-  EEPROM.get(0, firstNote);
-  EEPROM.get(1, velocity);
-  EEPROM.get(2, debouncingTime);
-  EEPROM.get(3, pedalPins);
+  uint8_t checksum;
+  EEPROM.get(0, checksum);
+  EEPROM.get(1, firstNote);
+  EEPROM.get(2, velocity);
+  EEPROM.get(3, debouncingTime);
+  EEPROM.get(4, pedalPins);
+
+  uint8_t expectedChecksum = ChecksumCalculator::CalcChecksum(&firstNote, sizeof(firstNote));
+  expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &velocity, sizeof(velocity));
+  expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &debouncingTime, sizeof(debouncingTime));
+  expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &pedalPins, sizeof(pedalPins));
+
+  if (checksum != expectedChecksum) {
+    memset(&firstNote, 0, sizeof(firstNote));
+    memset(&velocity, 0, sizeof(velocity));
+    memset(&debouncingTime, 0, sizeof(debouncingTime));
+    memset(&pedalPins, 0, sizeof(pedalPins));
+  }
 }
 
 
@@ -35,10 +50,16 @@ void ConfigurationManager::WriteValues()
     return;
   }
 
-  EEPROM.put(0, firstNote);
-  EEPROM.put(1, velocity);
-  EEPROM.put(2, debouncingTime);
-  EEPROM.put(3, pedalPins);
+  uint8_t checksum = ChecksumCalculator::CalcChecksum(&firstNote, sizeof(firstNote));
+  checksum = ChecksumCalculator::ModifyChecksum(checksum, &velocity, sizeof(velocity));
+  checksum = ChecksumCalculator::ModifyChecksum(checksum, &debouncingTime, sizeof(debouncingTime));
+  checksum = ChecksumCalculator::ModifyChecksum(checksum, &pedalPins, sizeof(pedalPins));
+
+  EEPROM.put(0, checksum);
+  EEPROM.put(1, firstNote);
+  EEPROM.put(2, velocity);
+  EEPROM.put(3, debouncingTime);
+  EEPROM.put(4, pedalPins);
 }
 
 
