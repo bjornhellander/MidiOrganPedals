@@ -1,4 +1,5 @@
 #include "RawMessageUnpacker.h"
+#include "ChecksumCalculator.h"
 
 
 #define StartByte 0xFF
@@ -80,7 +81,7 @@ bool RawMessageUnpacker::ProcessPayload(uint8_t data, RawMessage &message)
     if (payloadSize >= length)
     {
         // Verify checksum
-        auto expectedChecksum = CalcChecksum(payloadData, payloadSize);
+        auto expectedChecksum = ChecksumCalculator::CalcChecksum(payloadData, payloadSize);
         if (checksum != expectedChecksum)
         {
             Abort();

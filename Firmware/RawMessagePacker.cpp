@@ -1,4 +1,5 @@
 #include "RawMessagePacker.h"
+#include "ChecksumCalculator.h"
 
 
 void RawMessagePacker::Pack(const RawMessage &input)
@@ -6,7 +7,7 @@ void RawMessagePacker::Pack(const RawMessage &input)
   uint8_t id = input.GetId();
   const uint8_t *payloadData = input.GetData();
   uint8_t payloadSize = input.GetSize();
-  uint8_t checksum = CalcChecksum(payloadData, payloadSize);
+  uint8_t checksum = ChecksumCalculator::CalcChecksum(payloadData, payloadSize);
   
   data[0] = StartByte;
   data[1] = id;
