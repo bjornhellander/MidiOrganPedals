@@ -12,7 +12,12 @@
 #include "Misc.h"
 
 
-static const int ledPin = 6; // Teensy++ 2.0 has the LED on pin 6
+// #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
+// #ifdef DTEENSYDUINO
+// #ifdef MATTAIRTECH
+
+
+static const int ledPin = LED_BUILTIN; // Teensy++ 2.0 has the LED on pin 6, Mattair MT-DB-U6 has LED on pin 0
 static const uint8_t channel = 0;
 
 
