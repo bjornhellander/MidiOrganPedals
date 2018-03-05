@@ -19,7 +19,7 @@ ConfigurationStatusMessage::ConfigurationStatusMessage(
      PedalPins[i] = pedalPins[i];
     }
     else {
-      PedalPins[i] = 0;
+      PedalPins[i] = UNUSED_PIN_NUMBER;
     }
   }
 }

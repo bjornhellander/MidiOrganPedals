@@ -4,6 +4,13 @@
 #include <EEPROM.h>
 
 
+//#if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
+//#ifdef DTEENSYDUINO
+//static int availablePins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 38, 39, 40, 41, 42, 43, 44, 45 };
+//#endif
+//#endif
+
+
 void ConfigurationManager::ReadValues()
 {
   static const uint16_t size = sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
@@ -29,7 +36,7 @@ void ConfigurationManager::ReadValues()
     memset(&firstNote, 0, sizeof(firstNote));
     memset(&velocity, 0, sizeof(velocity));
     memset(&debouncingTime, 0, sizeof(debouncingTime));
-    memset(&pedalPins, 0, sizeof(pedalPins));
+    memset(&pedalPins, UNUSED_PIN_NUMBER, sizeof(pedalPins));
   }
 }
 
@@ -81,7 +88,7 @@ void ConfigurationManager::SetupImpl(uint8_t firstNote, uint8_t velocity, uint8_
       this->pedalPins[i] = pedalPins[i];
     }
     else {
-      this->pedalPins[i] = 0;
+      this->pedalPins[i] = UNUSED_PIN_NUMBER;
     }
   }
 }
@@ -108,7 +115,7 @@ uint8_t ConfigurationManager::GetDebouncingTime()
 uint32_t ConfigurationManager::GetPedalPin(uint8_t i)
 {
   if (i >= ARRAY_SIZE(pedalPins)){
-    return 0;
+    return UNUSED_PIN_NUMBER;
   }
 
   return pedalPins[i];

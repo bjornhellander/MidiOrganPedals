@@ -3,7 +3,6 @@
 
 
 static const int PRESSED_PIN_STATE = LOW; // Value read for a pressed pedal
-static const uint8_t UNUSED_PIN_NUMBER = 0;
 
 
 PedalManager::PedalManager(MidiPort &midiPort)

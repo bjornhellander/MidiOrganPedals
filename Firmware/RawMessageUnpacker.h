@@ -18,11 +18,7 @@ class RawMessageUnpacker : public RawMessageHandler
 public:
   bool Unpack(uint8_t data, RawMessage &input);
   
-  //uint16_t GetSize() const;
-  //const uint8_t *GetData() const;
-  
 private:
-  //uint8_t CalcChecksum(const uint8_t payloadData[], uint8_t payloadSize);
   bool Process(uint8_t data, RawMessage &message);
   void ProcessStart(uint8_t data);
   void ProcessId(uint8_t data);
