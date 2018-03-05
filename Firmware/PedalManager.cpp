@@ -11,11 +11,11 @@ PedalManager::PedalManager(MidiPort &midiPort)
 }
 
 
-void PedalManager::Setup(const uint8_t pedalPins[], uint8_t pedalPinCount)
+void PedalManager::Setup(bool configurationIsOk, const uint8_t pedalPins[], uint8_t pedalPinCount)
 {
   for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
     auto pedal = &pedals[i];
-    if (i < pedalPinCount && pedalPins[i] != UNUSED_PIN_NUMBER) {
+    if (configurationIsOk && i < pedalPinCount && pedalPins[i] != UNUSED_PIN_NUMBER) {
       auto pin = pedalPins[i];
       pedal->pin = pin;
       pinMode(pin, INPUT_PULLUP);

@@ -21,6 +21,7 @@ static const int ledPin = LED_BUILTIN; // Teensy++ 2.0 has the LED on pin 6, Mat
 static const uint8_t channel = 0;
 
 
+static bool configurationIsOk;
 static int count = 0;
 static int ledOn = 1;
 static uint16_t numberOfReceivedBytes = 0;
@@ -36,17 +37,18 @@ static RawMessageUnpacker receivedMessageUnpacker;
 void setup()
 {
   configurationManager.Setup();
-  
+  configurationIsOk = configurationManager.IsOk();
+
   maintenancePort.Setup();
-  
+
   midiPort.Setup(channel, configurationManager.GetFirstNote(), configurationManager.GetVelocity());
 
   uint8_t pedalPins[ConfigurationManager::MaxPedals];
   for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
     pedalPins[i] = configurationManager.GetPedalPin(i);
   }
-  pedalManager.Setup(pedalPins, ARRAY_SIZE(pedalPins));
-  
+  pedalManager.Setup(configurationIsOk, pedalPins, ARRAY_SIZE(pedalPins));
+
   pinMode(ledPin, OUTPUT);
 }
 
@@ -75,7 +77,7 @@ static void SendGeneralStatusMessage()
   auto numberOfToggledPedals = pedalManager.GetNumberOfToggledPedals();
   auto numberOfToggledNotes = pedalManager.GetNumberOfToggledNotes();
   
-  GeneralStatusMessage message(true, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, numberOfReceivedBytes, 14);
+  GeneralStatusMessage message(configurationIsOk, pressedPedals, playedNotes, numberOfToggledPedals, numberOfToggledNotes, numberOfReceivedBytes, 14);
   RawMessage rawMessage;
   message.Pack(rawMessage);
   RawMessagePacker rawMessagePacker;
@@ -110,6 +112,8 @@ static void ProcessConfigurationRequestMessage(const RawMessage &rawMessage)
   
   if (message.Unpack(rawMessage)) {
     configurationManager.Setup(message.FirstNote, message.Velocity, message.DebouncingTime, message.PedalPins, ARRAY_SIZE(message.PedalPins));
+    configurationIsOk = configurationManager.IsOk();
+    // TODO: We should setup PedalManager again, since the pins might have changed
   }
 }
 
@@ -140,7 +144,7 @@ static void ProcessMaintenanceMessages()
 void loop()
 {
   ProcessMaintenanceMessages();
-  
+
   pedalManager.Process();
 
   switch (count++ % 3) {

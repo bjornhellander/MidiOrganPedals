@@ -4,11 +4,14 @@
 #include <EEPROM.h>
 
 
-//#if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
-//#ifdef DTEENSYDUINO
-//static int availablePins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 38, 39, 40, 41, 42, 43, 44, 45 };
-//#endif
-//#endif
+#if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
+#ifdef TEENSYDUINO
+static int validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 38, 39, 40, 41, 42, 43, 44, 45 };
+#endif
+#ifdef MATTAIRTECH
+#error Add valid pins for MattairTech board
+#endif
+#endif
 
 
 void ConfigurationManager::ReadValues()
@@ -45,6 +48,7 @@ void ConfigurationManager::Setup()
 {
   ReadValues();
   SetupImpl(firstNote, velocity, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
+  CheckIfOk();
 }
 
 
@@ -74,6 +78,7 @@ void ConfigurationManager::Setup(uint8_t firstNote, uint8_t velocity, uint8_t de
 {
   SetupImpl(firstNote, velocity, debouncingTime, pedalPins, pedalPinCount);
   WriteValues();
+  CheckIfOk();
 }
 
 
@@ -91,6 +96,41 @@ void ConfigurationManager::SetupImpl(uint8_t firstNote, uint8_t velocity, uint8_
       this->pedalPins[i] = UNUSED_PIN_NUMBER;
     }
   }
+}
+
+
+void ConfigurationManager::CheckIfOk()
+{
+  auto firstNoteIsOk = IsValidPin(firstNote);
+  auto velocityIsOk = true;
+  auto debouncingTimeIsOk = true;
+
+  auto pedalPinsIsOk = true;
+  for (uint8_t i = 0; i < ARRAY_SIZE(this->pedalPins); i++) {
+    auto pin = pedalPins[i];
+    auto pedalPinIsOk = pin == UNUSED_PIN_NUMBER ? true : IsValidPin(pin);
+    pedalPinsIsOk = pedalPinsIsOk && pedalPinIsOk;
+  }
+
+  isOk = firstNoteIsOk && velocityIsOk && debouncingTimeIsOk && pedalPinsIsOk;
+}
+
+
+bool ConfigurationManager::IsValidPin(int pin)
+{
+  for (int i = 0; i < ARRAY_SIZE(validPins); i++) {
+    if (validPins[i] == pin) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+bool ConfigurationManager::IsOk()
+{
+  return isOk;
 }
 
 
