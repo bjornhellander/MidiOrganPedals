@@ -4,19 +4,19 @@
     {
         public OnOffIndicatorViewModel()
         {
-            Text = new Property<string>("ABC");
+            Value = new Property<int>(123);
             IsOn = new Property<bool>(true);
             IsEditable = new Property<bool>(false);
         }
 
-        public OnOffIndicatorViewModel(string text, bool isOn)
+        public OnOffIndicatorViewModel(int value, bool isOn)
         {
-            Text = new Property<string>(text);
+            Value = new Property<int>(value);
             IsOn = new Property<bool>(isOn);
             IsEditable = new Property<bool>(false);
         }
 
-        public Property<string> Text { get; }
+        public Property<int> Value { get; }
 
         public Property<bool> IsOn { get; }
 

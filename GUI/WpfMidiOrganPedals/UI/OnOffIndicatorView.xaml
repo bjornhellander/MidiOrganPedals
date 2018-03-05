@@ -15,7 +15,7 @@
     <Grid>
         <Border BorderBrush="{Binding Path=IsOn.Value, Converter={StaticResource boolToColorConverter}}" BorderThickness="5" CornerRadius="5">
             <Grid>
-                <TextBox Text="{Binding Path=Text.Value}" IsReadOnly="{Binding Path=IsEditable.Value, Converter={StaticResource boolInverter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=Value.Value}" IsReadOnly="{Binding Path=IsEditable.Value, Converter={StaticResource boolInverter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Border>
     </Grid>

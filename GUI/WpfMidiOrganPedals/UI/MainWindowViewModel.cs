@@ -36,14 +36,14 @@ namespace WpfMidiOrganPedals.UI
             PressedPedals = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pressedPedals);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                pressedPedals.Add(new OnOffIndicatorViewModel((i + 1).ToString(), i % 2 != 0));
+                pressedPedals.Add(new OnOffIndicatorViewModel(i + 1, i % 2 != 0));
             }
 
             playedNotes = new ObservableCollection<OnOffIndicatorViewModel>();
             PlayedNotes = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(playedNotes);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                playedNotes.Add(new OnOffIndicatorViewModel((i + 1).ToString(), i % 2 == 0));
+                playedNotes.Add(new OnOffIndicatorViewModel(i + 1, i % 2 == 0));
             }
 
             FirstNote.SetValue(40);
@@ -54,7 +54,7 @@ namespace WpfMidiOrganPedals.UI
             PedalPins = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pedalPins);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                pedalPins.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
+                pedalPins.Add(new OnOffIndicatorViewModel(i + 1, false));
             }
 
             EditCommand = new ManualCommand(HandleEditCommand, true);
@@ -89,21 +89,21 @@ namespace WpfMidiOrganPedals.UI
             PressedPedals = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pressedPedals);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                pressedPedals.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
+                pressedPedals.Add(new OnOffIndicatorViewModel(i + 1, false));
             }
 
             playedNotes = new ObservableCollection<OnOffIndicatorViewModel>();
             PlayedNotes = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(playedNotes);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                playedNotes.Add(new OnOffIndicatorViewModel((i + 1).ToString(), false));
+                playedNotes.Add(new OnOffIndicatorViewModel(i + 1, false));
             }
 
             pedalPins = new ObservableCollection<OnOffIndicatorViewModel>();
             PedalPins = new ReadOnlyObservableCollection<OnOffIndicatorViewModel>(pedalPins);
             for (var i = 0; i < 8 * sizeof(uint); i++)
             {
-                pedalPins.Add(new OnOffIndicatorViewModel("0", false));
+                pedalPins.Add(new OnOffIndicatorViewModel(0, false));
             }
 
             EditCommand = new ManualCommand(HandleEditCommand, true);
@@ -219,7 +219,7 @@ namespace WpfMidiOrganPedals.UI
                     for (var i = 0; i < input2.PedalPins.Length; i++)
                     {
                         var obj = pedalPins[i];
-                        obj.Text.SetValue(input2.PedalPins[i].ToString());
+                        obj.Value.SetValue(input2.PedalPins[i]);
                     }
                 }
             }
@@ -266,7 +266,7 @@ namespace WpfMidiOrganPedals.UI
                 pedalPin.IsEditable.SetValue(false);
             }
 
-            var message = new ConfigurationRequestMessage(FirstNote.Value, Velocity.Value, DebouncingTime.Value, PedalPins.Select(x => int.Parse(x.Text.Value)).ToArray());
+            var message = new ConfigurationRequestMessage(FirstNote.Value, Velocity.Value, DebouncingTime.Value, PedalPins.Select(x => x.Value.Value).ToArray());
             currentDevice.SendMessage(message);
         }
     }
