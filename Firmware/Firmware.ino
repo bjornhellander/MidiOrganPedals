@@ -19,6 +19,10 @@
 
 static const int ledPin = LED_BUILTIN; // Teensy++ 2.0 has the LED on pin 6, Mattair MT-DB-U6 has LED on pin 0
 static const uint8_t channel = 0;
+static const enum {
+  PressedKeys,
+  ReceivedMessages
+} ledMode = PressedKeys;
 
 
 static bool configurationIsOk;
@@ -83,6 +87,17 @@ static void SendGeneralStatusMessage()
   RawMessagePacker rawMessagePacker;
   rawMessagePacker.Pack(rawMessage);
   maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
+
+  if (ledMode == PressedKeys) {
+    uint8_t count = 0;
+    auto temp = pressedPedals;
+    while (temp != 0) {
+      count += temp & 1;
+      temp >>= 1;
+    }
+    
+    digitalWrite(ledPin, count & 1);
+  }
 }
 
 
@@ -93,6 +108,7 @@ static void SendConfigurationStatusMessage()
   auto debouncingTime = configurationManager.GetDebouncingTime();
 
   uint8_t pedalPins[ConfigurationManager::MaxPedals];
+  uint8_t pressedKeys = 0;
   for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
     pedalPins[i] = configurationManager.GetPedalPin(i);
   }
@@ -126,8 +142,10 @@ static void ProcessMaintenanceMessages()
   for (uint8_t i = 0; i < length; i++) {
     RawMessage rawMessage;
     if (receivedMessageUnpacker.Unpack(buffer[i], rawMessage)) {
-      ledOn = !ledOn;
-      digitalWrite(ledPin, ledOn);
+      if (ledMode == ReceivedMessages) {
+        ledOn = !ledOn;
+        digitalWrite(ledPin, ledOn);
+      }
 
       switch (rawMessage.GetId()) {
         case ConfigurationRequestMessage::Id:
