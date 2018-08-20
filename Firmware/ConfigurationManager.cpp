@@ -16,14 +16,13 @@ static int validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 
 void ConfigurationManager::ReadValues()
 {
-  static const uint16_t size = sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
+  static const uint16_t size = sizeof(checksum) + sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
 
   if (EEPROM.length() < size)
   {
     return;
   }
 
-  uint8_t checksum;
   EEPROM.get(0, checksum);
   EEPROM.get(1, firstNote);
   EEPROM.get(2, velocity);
@@ -54,14 +53,14 @@ void ConfigurationManager::Setup()
 
 void ConfigurationManager::WriteValues()
 {
-  static const uint16_t size = sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
+  static const uint16_t size = sizeof(checksum) + sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
 
   if (EEPROM.length() < size)
   {
     return;
   }
 
-  uint8_t checksum = ChecksumCalculator::CalcChecksum(&firstNote, sizeof(firstNote));
+  checksum = ChecksumCalculator::CalcChecksum(&firstNote, sizeof(firstNote));
   checksum = ChecksumCalculator::ModifyChecksum(checksum, &velocity, sizeof(velocity));
   checksum = ChecksumCalculator::ModifyChecksum(checksum, &debouncingTime, sizeof(debouncingTime));
   checksum = ChecksumCalculator::ModifyChecksum(checksum, &pedalPins, sizeof(pedalPins));

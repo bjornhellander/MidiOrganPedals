@@ -13,6 +13,7 @@ public:
 
 private:
   bool isOk;
+  uint8_t checksum;
   uint8_t firstNote;
   uint8_t velocity;
   uint8_t debouncingTime;
