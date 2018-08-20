@@ -36,6 +36,7 @@ private:
   void CheckIfOk();
   bool IsValidPin(int pin);
   bool IsUnusedPin(int pin, uint8_t pins[], int size);
+  bool IsValidNote(int note);
 };
 
 

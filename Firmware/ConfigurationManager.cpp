@@ -100,7 +100,7 @@ void ConfigurationManager::SetupImpl(uint8_t firstNote, uint8_t velocity, uint8_
 
 void ConfigurationManager::CheckIfOk()
 {
-  auto firstNoteIsOk = IsValidPin(firstNote);
+  auto firstNoteIsOk = IsValidNote(firstNote);
   auto velocityIsOk = true;
   auto debouncingTimeIsOk = true;
 
@@ -139,6 +139,13 @@ bool ConfigurationManager::IsUnusedPin(int pin, uint8_t pins[], int size)
   }
 
   return true;
+}
+
+
+bool ConfigurationManager::IsValidNote(int note)
+{
+  auto result = (note >= 0) && (note < 128);
+  return result;
 }
 
 
