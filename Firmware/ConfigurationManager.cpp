@@ -6,7 +6,7 @@
 
 #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
 #ifdef TEENSYDUINO
-static int validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 38, 39, 40, 41, 42, 43, 44, 45 };
+static int validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 38, 39, 40, 41, 42, 43, 44, 45 }; // RX=2, TX=3, LED=6
 #endif
 #ifdef MATTAIRTECH
 #error Add valid pins for MattairTech board
@@ -108,8 +108,11 @@ void ConfigurationManager::CheckIfOk()
   auto pedalPinsAreOk = true;
   for (uint8_t i = 0; i < ARRAY_SIZE(this->pedalPins); i++) {
     auto pin = pedalPins[i];
-    auto pedalPinIsOk = pin == UNUSED_PIN_NUMBER ? true : IsValidPin(pin);
-    pedalPinsAreOk = pedalPinsAreOk && pedalPinIsOk;
+    if (pin != UNUSED_PIN_NUMBER) {
+      auto pedalPinIsOk = IsValidPin(pin);
+      auto pedalPinIsUnused = IsUnusedPin(pin, pedalPins, i);
+      pedalPinsAreOk = pedalPinsAreOk && pedalPinIsOk && pedalPinIsUnused;
+    }
   }
 
   isOk = firstNoteIsOk && velocityIsOk && debouncingTimeIsOk && pedalPinsAreOk;
@@ -125,6 +128,18 @@ bool ConfigurationManager::IsValidPin(int pin)
   }
 
   return false;
+}
+
+
+bool ConfigurationManager::IsUnusedPin(int pin, uint8_t pins[], int size)
+{
+  for (int i = 0; i < size; i++) {
+    if (pins[i] == pin) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 
