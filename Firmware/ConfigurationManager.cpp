@@ -105,12 +105,16 @@ void ConfigurationManager::CheckIfOk()
   auto debouncingTimeIsOk = true;
 
   auto pedalPinsAreOk = true;
+  int noteDiff = 0;
   for (uint8_t i = 0; i < ARRAY_SIZE(this->pedalPins); i++) {
     auto pin = pedalPins[i];
     if (pin != UNUSED_PIN_NUMBER) {
       auto pedalPinIsOk = IsValidPin(pin);
       auto pedalPinIsUnused = IsUnusedPin(pin, pedalPins, i);
-      pedalPinsAreOk = pedalPinsAreOk && pedalPinIsOk && pedalPinIsUnused;
+      auto noteIsOk = IsValidNote(firstNote + noteDiff);
+      pedalPinsAreOk = pedalPinsAreOk && pedalPinIsOk && pedalPinIsUnused && noteIsOk;
+
+      noteDiff++;
     }
   }
 
