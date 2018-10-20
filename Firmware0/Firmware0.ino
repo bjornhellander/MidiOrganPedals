@@ -1,11 +1,12 @@
 static const bool Log = false;
 static const bool SendMidi = true;
 
-static const byte MidiChannel = 0; // 0-15
-static const byte MidiVelocity = 80; // 0-127
 static const byte MidiCmdNoteOff = 0x80;
 static const byte MidiCmdNoteOn = 0x90;
-static const byte MidiLowestNote = 29; // A in some octave
+
+static const byte MidiChannel = 0; // 0-15
+static const byte MidiVelocity = 80; // 0-127
+static const byte MidiLowestNote = 29; // 0-127, A in some octave
 
 static const byte LedPin = 13;
 
@@ -49,6 +50,29 @@ static int change = 0;
 /*-----------------------------------------------------------------------------------------*/
 
 
+static void sendCommand(byte cmd, byte data1, byte data2)
+{
+  Serial.write(cmd);
+  Serial.write(data1);
+  Serial.write(data2);
+}
+
+
+static void noteOn(byte channel, byte note, byte velocity)
+{
+  sendCommand(MidiCmdNoteOn | channel, note, velocity);
+}
+
+
+static void noteOff(byte channel, byte note, byte velocity)
+{
+  sendCommand(MidiCmdNoteOff | channel, note, velocity);
+}
+
+
+/*-----------------------------------------------------------------------------------------*/
+
+
 static void initPedalPin(byte i)
 {
   int8_t pedalPin = pedals[i].InputPin;
@@ -86,26 +110,6 @@ void setup()
 
 
 /*-----------------------------------------------------------------------------------------*/
-
-
-static void sendCommand(byte cmd, byte data1, byte data2)
-{
-  Serial.write(cmd);
-  Serial.write(data1);
-  Serial.write(data2);
-}
-
-
-static void noteOn(byte channel, byte note, byte velocity)
-{
-  sendCommand(MidiCmdNoteOn | channel, note, velocity);
-}
-
-
-static void noteOff(byte channel, byte note, byte velocity)
-{
-  sendCommand(MidiCmdNoteOff | channel, note, velocity);
-}
 
 
 static void processPedal(byte i)
