@@ -11,9 +11,15 @@ static const byte MidiCmdProgramChange = 0xC0;
 static const byte MidiChannel = 0; // 0-15
 static const byte MidiVelocity = 80; // 0-127
 static const byte MidiLowestNote = 29; // 0-127, A in some octave
+
+#define NEW_KEYBOARD
+#ifdef NEW_KEYBOARD
 static const byte MidiCtrlSoundBankMsb = 0;
 static const byte MidiCtrlSoundBankLsb = 112;
 static const byte MidiProgram = 19;
+#else
+static const byte MidiProgram = 21;
+#endif
 
 static const byte LedPin = 13;
 
@@ -119,9 +125,13 @@ static void sendStartupSequence()
   delay(2000);
   if (SendMidi)
   {
+#ifdef NEW_KEYBOARD
     controlChange(MidiChannel, MidiCtrlSoundBankSelectionMsb, MidiCtrlSoundBankMsb);
     controlChange(MidiChannel, MidiCtrlSoundBankSelectionLsb, MidiCtrlSoundBankLsb);
     programChange(MidiChannel, MidiProgram);
+#else
+    programChange(MidiChannel, MidiProgram);
+#endif
   }
 }
 
