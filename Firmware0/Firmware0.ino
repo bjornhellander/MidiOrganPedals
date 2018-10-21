@@ -122,17 +122,13 @@ static void initLed()
 
 static void sendStartupSequence()
 {
-  delay(2000);
-  if (SendMidi)
-  {
 #ifdef NEW_KEYBOARD
-    controlChange(MidiChannel, MidiCtrlSoundBankSelectionMsb, MidiCtrlSoundBankMsb);
-    controlChange(MidiChannel, MidiCtrlSoundBankSelectionLsb, MidiCtrlSoundBankLsb);
-    programChange(MidiChannel, MidiProgram);
+  controlChange(MidiChannel, MidiCtrlSoundBankSelectionMsb, MidiCtrlSoundBankMsb);
+  controlChange(MidiChannel, MidiCtrlSoundBankSelectionLsb, MidiCtrlSoundBankLsb);
+  programChange(MidiChannel, MidiProgram);
 #else
-    programChange(MidiChannel, MidiProgram);
+  programChange(MidiChannel, MidiProgram);
 #endif
-  }
 }
 
 
@@ -155,7 +151,8 @@ void setup()
   
   initLed();
   
-  sendStartupSequence();
+  // Make sure all inputs are stable
+  delay(100);
 }
 
 
@@ -176,6 +173,21 @@ static void processPedal(byte i)
     pedals[i].IsPressed = isPressed;
     byte note = MidiLowestNote + i;
     change++;
+    
+    if (change == 1 && i == 0)
+    {
+      // The left-most pedal was the first one pressed
+      
+      if (Log)
+      {
+        Serial.println("Sending startup sequence");
+      }
+
+      if (SendMidi)
+      {
+        sendStartupSequence();
+      }
+    }
     
     if (Log)
     {
