@@ -175,19 +175,16 @@ static void processPedal(byte i)
   {
     pedals[i].IsPressed = isPressed;
     byte note = MidiLowestNote + i;
+    change++;
     
     if (Log)
     {
-      change++;
       Serial.print(change);
       Serial.print(": Changed state of pin ");
       Serial.print(pedalPin);
       Serial.print(" to ");
       Serial.println(isPressed);
-    }
-    
-    if (Log)
-    {
+      
       Serial.print("Corresponds to note ");
       Serial.println(note);
     }
@@ -206,13 +203,13 @@ static void processPedal(byte i)
     
     ledOn = !ledOn;
     int ledState = ledOn ? LOW : HIGH;
+    digitalWrite(LedPin, ledState);
     if (Log)
     {
       Serial.print("Setting LED to  ");
       Serial.print(ledState);
       Serial.println();
     }
-    digitalWrite(LedPin, ledState);
   }
 }
 
