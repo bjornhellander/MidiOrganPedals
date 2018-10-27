@@ -58,7 +58,6 @@ void RawMessageUnpacker::ProcessLength(uint8_t data)
     AddByte(data);
 
     length = data;
-    //payloadData = new byte[length];
 }
 
 
@@ -102,7 +101,6 @@ bool RawMessageUnpacker::ProcessPayload(uint8_t data, RawMessage &message)
 void RawMessageUnpacker::AddByte(uint8_t data)
 {
     dataSize++;
-    //data[dataSize++] = data;
 }
 
 
@@ -116,6 +114,5 @@ void RawMessageUnpacker::Abort()
 void RawMessageUnpacker::Reset()
 {
     dataSize = 0;
-    //payloadData = null;
 }
 
