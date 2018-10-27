@@ -13,6 +13,10 @@ PedalManager::PedalManager(MidiPort &midiPort)
 
 void PedalManager::Setup(bool configurationIsOk, uint8_t debouncingTime, const uint8_t pedalPins[], uint8_t pedalPinCount)
 {
+  // NOTE: If this method is called because of a received ConfigurationRequestMessage, previously used pins might be left in INPUT_PULLUP mode,
+  // but that is not a problem.
+  // NOTE: If this method is called because of a received ConfigurationRequestMessage while notes are playing, those notes will continue playing.
+  
   this->debouncingTime = debouncingTime;
   
   for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {

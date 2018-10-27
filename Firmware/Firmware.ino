@@ -36,9 +36,8 @@ static PedalManager pedalManager(midiPort);
 static RawMessageUnpacker receivedMessageUnpacker;
 
 
-void setup()
+static void ApplyConfiguration()
 {
-  configurationManager.Setup();
   configurationIsOk = configurationManager.IsOk();
   auto debouncingTime = configurationManager.GetDebouncingTime();
   uint8_t pedalPins[ConfigurationManager::MaxPedals];
@@ -53,6 +52,13 @@ void setup()
   pedalManager.Setup(configurationIsOk, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
 
   pinMode(ledPin, OUTPUT);
+}
+
+
+void setup()
+{
+  configurationManager.Setup();
+  ApplyConfiguration();
 }
 
 
@@ -115,8 +121,7 @@ static void ProcessConfigurationRequestMessage(const RawMessage &rawMessage)
   
   if (message.Unpack(rawMessage)) {
     configurationManager.Setup(message.FirstNote, message.Velocity, message.DebouncingTime, message.PedalPins, ARRAY_SIZE(message.PedalPins));
-    configurationIsOk = configurationManager.IsOk();
-    // TODO: We should setup PedalManager again, since the pins might have changed
+    ApplyConfiguration();
   }
 }
 
