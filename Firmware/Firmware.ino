@@ -22,7 +22,7 @@ static const enum {
 
 static bool configurationIsOk;
 static int count = 0;
-static int ledOn = 1;
+static uint16_t numberOfReceivedMessages = 0;
 static uint16_t numberOfReceivedBytes = 0;
 
 
@@ -82,17 +82,6 @@ static void SendGeneralStatusMessage()
   RawMessagePacker rawMessagePacker;
   rawMessagePacker.Pack(rawMessage);
   maintenancePort.Send(rawMessagePacker.GetData(), rawMessagePacker.GetSize());
-
-  if (ledMode == PressedKeys) {
-    uint8_t count = 0;
-    auto temp = pressedPedals;
-    while (temp != 0) {
-      count += temp & 1;
-      temp >>= 1;
-    }
-    
-    digitalWrite(ledPin, count & 1);
-  }
 }
 
 
@@ -137,10 +126,7 @@ static void ProcessMaintenanceMessages()
   for (uint8_t i = 0; i < length; i++) {
     RawMessage rawMessage;
     if (receivedMessageUnpacker.Unpack(buffer[i], rawMessage)) {
-      if (ledMode == ReceivedMessages) {
-        ledOn = !ledOn;
-        digitalWrite(ledPin, ledOn);
-      }
+      numberOfReceivedMessages++;
 
       switch (rawMessage.GetId()) {
         case ConfigurationRequestMessage::Id:
@@ -151,6 +137,24 @@ static void ProcessMaintenanceMessages()
 
     numberOfReceivedBytes++;
   }
+}
+
+
+static void UpdateLed()
+{
+  int ledState = LOW;
+
+  switch (ledMode) {
+  case PressedKeys:
+    ledState = pedalManager.GetNumberOfPressedPedals() % 2;
+    break;
+
+  case ReceivedMessages:
+    ledState = numberOfReceivedMessages % 2;
+    break;
+  }
+
+  digitalWrite(ledPin, ledState);
 }
 
 
@@ -174,6 +178,8 @@ void loop()
       break;
   }
 
+  UpdateLed();
+  
   delay(1000);
 }
 

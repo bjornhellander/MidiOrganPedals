@@ -92,6 +92,19 @@ uint32_t PedalManager::IsNotePlayed(uint8_t i)
 }
 
 
+uint8_t PedalManager::GetNumberOfPressedPedals()
+{
+  uint8_t count = 0;
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
+    if (pedals[i].pressed) {
+      count++;
+    }
+  }
+  
+  return count;
+}
+
+
 uint16_t PedalManager::GetNumberOfToggledPedals()
 {
   return numberOfToggledPedals;
