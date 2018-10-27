@@ -4,6 +4,9 @@
 #include <EEPROM.h>
 
 
+#define EXPECTED_VERSION 0
+
+
 #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
 #ifdef TEENSYDUINO
 // NOTE: USB pins are not easily accessible on the board. They are not in this list.
@@ -17,25 +20,26 @@ static uint8_t validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 
 
 void ConfigurationManager::ReadValues()
 {
-  static const uint16_t size = sizeof(checksum) + sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
+  static const uint16_t size = sizeof(version) + sizeof(checksum) + sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
 
   if (EEPROM.length() < size)
   {
     return;
   }
 
-  EEPROM.get(0, checksum);
-  EEPROM.get(1, firstNote);
-  EEPROM.get(2, velocity);
-  EEPROM.get(3, debouncingTime);
-  EEPROM.get(4, pedalPins);
+  EEPROM.get(0, version);
+  EEPROM.get(1, checksum);
+  EEPROM.get(2, firstNote);
+  EEPROM.get(3, velocity);
+  EEPROM.get(4, debouncingTime);
+  EEPROM.get(5, pedalPins);
 
   uint8_t expectedChecksum = ChecksumCalculator::CalcChecksum(&firstNote, sizeof(firstNote));
   expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &velocity, sizeof(velocity));
   expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &debouncingTime, sizeof(debouncingTime));
   expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &pedalPins, sizeof(pedalPins));
 
-  if (checksum != expectedChecksum) {
+  if (checksum != expectedChecksum || version != EXPECTED_VERSION) {
     memset(&firstNote, 0, sizeof(firstNote));
     memset(&velocity, 0, sizeof(velocity));
     memset(&debouncingTime, 0, sizeof(debouncingTime));
@@ -54,23 +58,26 @@ void ConfigurationManager::Setup()
 
 void ConfigurationManager::WriteValues()
 {
-  static const uint16_t size = sizeof(checksum) + sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
+  static const uint16_t size = sizeof(version) + sizeof(checksum) + sizeof(firstNote) + sizeof(velocity) + sizeof(debouncingTime) + sizeof(pedalPins);
 
   if (EEPROM.length() < size)
   {
     return;
   }
 
+  version = EXPECTED_VERSION;
+
   checksum = ChecksumCalculator::CalcChecksum(&firstNote, sizeof(firstNote));
   checksum = ChecksumCalculator::ModifyChecksum(checksum, &velocity, sizeof(velocity));
   checksum = ChecksumCalculator::ModifyChecksum(checksum, &debouncingTime, sizeof(debouncingTime));
   checksum = ChecksumCalculator::ModifyChecksum(checksum, &pedalPins, sizeof(pedalPins));
 
-  EEPROM.put(0, checksum);
-  EEPROM.put(1, firstNote);
-  EEPROM.put(2, velocity);
-  EEPROM.put(3, debouncingTime);
-  EEPROM.put(4, pedalPins);
+  EEPROM.put(0, version);
+  EEPROM.put(1, checksum);
+  EEPROM.put(2, firstNote);
+  EEPROM.put(3, velocity);
+  EEPROM.put(4, debouncingTime);
+  EEPROM.put(5, pedalPins);
 }
 
 
