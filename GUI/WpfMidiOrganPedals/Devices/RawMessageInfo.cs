@@ -10,7 +10,10 @@
 
             foreach (var @byte in payloadData)
             {
-                result ^= @byte;
+                unchecked
+                {
+                    result += @byte;
+                }
             }
 
             return result;
