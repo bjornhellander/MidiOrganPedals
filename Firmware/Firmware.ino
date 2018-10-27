@@ -12,6 +12,9 @@
 #include "Misc.h"
 
 
+#define TIME_BETWEEN_SENT_MESSAGES 1000
+
+
 static const int ledPin = LED_BUILTIN;
 static const uint8_t channel = 0; // TODO: Should this be configurable instead?
 static const enum {
@@ -160,26 +163,31 @@ static void UpdateLed()
 
 void loop()
 {
+  static unsigned long timeOfLastSentMessage = 0;
+  unsigned long now = millis();
+  
   ProcessMaintenanceMessages();
 
   pedalManager.Process();
 
-  switch (count++ % 3) {
-    case 0:
-      SendDebugMessage();
-      break;
+  if (now - timeOfLastSentMessage >= TIME_BETWEEN_SENT_MESSAGES) {
+    timeOfLastSentMessage = now;
+    
+    switch (count++ % 3) {
+      case 0:
+        SendDebugMessage();
+        break;
 
-    case 1:
-      SendGeneralStatusMessage();
-      break;
+      case 1:
+        SendGeneralStatusMessage();
+        break;
 
-    case 2:
-      SendConfigurationStatusMessage();
-      break;
+      case 2:
+        SendConfigurationStatusMessage();
+        break;
+    }
   }
 
   UpdateLed();
-  
-  delay(1000);
 }
 
