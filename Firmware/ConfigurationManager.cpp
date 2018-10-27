@@ -5,6 +5,9 @@
 
 
 #define EXPECTED_VERSION 0
+#define DEFAULT_FIRST_NOTE 20
+#define DEFAULT_VELOCITY 70
+#define DEFAULT_DEBOUNCING_TIME 0
 
 
 #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
@@ -40,10 +43,13 @@ void ConfigurationManager::ReadValues()
   expectedChecksum = ChecksumCalculator::ModifyChecksum(expectedChecksum, &pedalPins, sizeof(pedalPins));
 
   if (checksum != expectedChecksum || version != EXPECTED_VERSION) {
-    memset(&firstNote, 0, sizeof(firstNote));
-    memset(&velocity, 0, sizeof(velocity));
-    memset(&debouncingTime, 0, sizeof(debouncingTime));
-    memset(&pedalPins, UNUSED_PIN_NUMBER, sizeof(pedalPins));
+    firstNote = DEFAULT_FIRST_NOTE;
+    velocity = DEFAULT_VELOCITY;
+    debouncingTime = DEFAULT_DEBOUNCING_TIME;
+    for (int i = 0; i < ARRAY_SIZE(pedalPins); i++) {
+      uint8_t pin = i < ARRAY_SIZE(validPins) ? validPins[i] : UNUSED_PIN_NUMBER;
+      pedalPins[i] = pin;
+    }
   }
 }
 
