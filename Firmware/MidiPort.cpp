@@ -2,11 +2,11 @@
 
 
 #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
-#define SERIAL Serial1
+#define SERIAL_OBJECT Serial1
 #endif
 
 #ifdef ARDUINO_AVR_UNO
-#define SERIAL Serial
+#define SERIAL_OBJECT Serial
 #endif
 
 
@@ -14,7 +14,7 @@ void MidiPort::Setup(uint8_t channel, uint8_t firstNote, uint8_t velocity)
 {
   this->velocity = velocity;
   
-  SERIAL.begin(31250);
+  SERIAL_OBJECT.begin(31250);
 }
 
 
@@ -40,11 +40,11 @@ bool MidiPort::StopNote(uint8_t note)
 
 bool MidiPort::SendCommand(uint8_t command[], uint8_t size)
 {
-  if (size > SERIAL.availableForWrite()) {
+  if (size > SERIAL_OBJECT.availableForWrite()) {
     return false;
   }
 
-  SERIAL.write(command, size);
+  SERIAL_OBJECT.write(command, size);
   return true;
 }
 

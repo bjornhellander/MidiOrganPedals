@@ -50,7 +50,7 @@ void ConfigurationManager::ReadValues()
     firstNote = DEFAULT_FIRST_NOTE;
     velocity = DEFAULT_VELOCITY;
     debouncingTime = DEFAULT_DEBOUNCING_TIME;
-    for (int i = 0; i < ARRAY_SIZE(pedalPins); i++) {
+    for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
       uint8_t pin = i < ARRAY_SIZE(validPins) ? validPins[i] : UNUSED_PIN_NUMBER;
       pedalPins[i] = pin;
     }
@@ -142,7 +142,7 @@ void ConfigurationManager::CheckIfOk()
 
 bool ConfigurationManager::IsValidPin(int pin)
 {
-  for (int i = 0; i < ARRAY_SIZE(validPins); i++) {
+  for (uint8_t i = 0; i < ARRAY_SIZE(validPins); i++) {
     if (validPins[i] == pin) {
       return true;
     }

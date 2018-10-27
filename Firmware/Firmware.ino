@@ -96,7 +96,6 @@ static void SendConfigurationStatusMessage()
   auto debouncingTime = configurationManager.GetDebouncingTime();
 
   uint8_t pedalPins[ConfigurationManager::MaxPedals];
-  uint8_t pressedKeys = 0;
   for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
     pedalPins[i] = configurationManager.GetPedalPin(i);
   }
