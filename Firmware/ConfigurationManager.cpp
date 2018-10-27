@@ -6,7 +6,8 @@
 
 #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
 #ifdef TEENSYDUINO
-static int validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 }; // RX=2, TX=3, LED=6
+// NOTE: USB pins are not easily accessible on the board. They are not in this list.
+static uint8_t validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 }; // RX=2, TX=3, LED=6
 #endif
 #ifdef MATTAIRTECH
 #error Add valid pins for MattairTech board
