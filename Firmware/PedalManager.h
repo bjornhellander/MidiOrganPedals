@@ -26,8 +26,8 @@ public:
 
   void Process();
 
-  uint32_t IsPedalPressed(uint8_t i);
-  uint32_t IsNotePlayed(uint8_t i);
+  bool IsPedalPressed(uint8_t i);
+  bool IsNotePlayed(uint8_t i);
   uint8_t GetNumberOfPressedPedals();
   uint16_t GetNumberOfToggledPedals();
   uint16_t GetNumberOfToggledNotes();

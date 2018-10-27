@@ -72,7 +72,7 @@ void PedalManager::Process()
 }
 
 
-uint32_t PedalManager::IsPedalPressed(uint8_t i)
+bool PedalManager::IsPedalPressed(uint8_t i)
 {
   if (i >= ARRAY_SIZE(pedals)) {
     return false;
@@ -82,7 +82,7 @@ uint32_t PedalManager::IsPedalPressed(uint8_t i)
 }
 
 
-uint32_t PedalManager::IsNotePlayed(uint8_t i)
+bool PedalManager::IsNotePlayed(uint8_t i)
 {
   if (i >= ARRAY_SIZE(pedals)) {
     return false;
