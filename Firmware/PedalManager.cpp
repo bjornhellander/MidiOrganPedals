@@ -11,8 +11,10 @@ PedalManager::PedalManager(MidiPort &midiPort)
 }
 
 
-void PedalManager::Setup(bool configurationIsOk, const uint8_t pedalPins[], uint8_t pedalPinCount)
+void PedalManager::Setup(bool configurationIsOk, uint8_t debouncingTime, const uint8_t pedalPins[], uint8_t pedalPinCount)
 {
+  this->debouncingTime = debouncingTime;
+  
   for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
     auto pedal = &pedals[i];
     if (configurationIsOk && i < pedalPinCount && pedalPins[i] != UNUSED_PIN_NUMBER) {
@@ -24,6 +26,8 @@ void PedalManager::Setup(bool configurationIsOk, const uint8_t pedalPins[], uint
       pedal->pin = UNUSED_PIN_NUMBER;
     }
 
+    pedal->timeOfTentativeChange = 0;
+    pedal->tentativelyPressed = false;
     pedal->pressed = false;
     pedal->played = false;
   }
@@ -35,15 +39,26 @@ void PedalManager::Setup(bool configurationIsOk, const uint8_t pedalPins[], uint
 
 void PedalManager::Process()
 {
+  uint32_t now = millis();
+  
   // Detect pedal changes
   for (uint8_t i = 0; i < ARRAY_SIZE(pedals); i++) {
     auto pedal = &pedals[i];
     if (pedal->pin != UNUSED_PIN_NUMBER) {
       auto state = digitalRead(pedal->pin);
       auto pressed = (state == PRESSED_PIN_STATE);
+      if (pedal->tentativelyPressed != pressed) {
+        // Input has changed. Wait until it stabilizes...
+        pedal->tentativelyPressed = pressed;
+        pedal->timeOfTentativeChange = now;
+      }
       if (pedal->pressed != pressed) {
-        numberOfToggledPedals++;
-        pedal->pressed = pressed;
+        uint32_t timeSinceTentativeChange = now - pedal->timeOfTentativeChange;
+        if (timeSinceTentativeChange >= debouncingTime) {
+          // The input seems stable. Accept the new input!
+          numberOfToggledPedals++;
+          pedal->pressed = pressed;
+        }
       }
     }
   }

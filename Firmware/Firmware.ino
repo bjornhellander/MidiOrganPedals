@@ -40,16 +40,17 @@ void setup()
 {
   configurationManager.Setup();
   configurationIsOk = configurationManager.IsOk();
+  auto debouncingTime = configurationManager.GetDebouncingTime();
+  uint8_t pedalPins[ConfigurationManager::MaxPedals];
+  for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
+    pedalPins[i] = configurationManager.GetPedalPin(i);
+  }
 
   maintenancePort.Setup();
 
   midiPort.Setup(channel, configurationManager.GetFirstNote(), configurationManager.GetVelocity());
 
-  uint8_t pedalPins[ConfigurationManager::MaxPedals];
-  for (uint8_t i = 0; i < ARRAY_SIZE(pedalPins); i++) {
-    pedalPins[i] = configurationManager.GetPedalPin(i);
-  }
-  pedalManager.Setup(configurationIsOk, pedalPins, ARRAY_SIZE(pedalPins));
+  pedalManager.Setup(configurationIsOk, debouncingTime, pedalPins, ARRAY_SIZE(pedalPins));
 
   pinMode(ledPin, OUTPUT);
 }
