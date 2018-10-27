@@ -20,6 +20,10 @@ static uint8_t validPins[] = { 0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 
 #endif
 #endif
 
+#ifdef ARDUINO_AVR_UNO
+static uint8_t validPins[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, A0, A1, A2, A3, A4, A5 }; // RX=0, TX=1, LED=13
+#endif
+
 
 void ConfigurationManager::ReadValues()
 {
